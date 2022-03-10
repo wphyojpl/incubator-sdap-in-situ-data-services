@@ -26,8 +26,8 @@ class TestGeneralUtils(unittest.TestCase):
         return
 
     def test_floor_lat_long(self):
-        self.assertEqual(GeneralUtils.floor_lat_long(-3, 5), '-5:5')
-        self.assertEqual(GeneralUtils.floor_lat_long(0, -0), '0:0')
-        self.assertEqual(GeneralUtils.floor_lat_long(22, -0), '20:0')
-        self.assertEqual(GeneralUtils.floor_lat_long(-2, 4, 3), '-3:3')
+        self.assertEqual(GeneralUtils.floor_lat_long(-3, 5), '-5_5')
+        self.assertEqual(GeneralUtils.floor_lat_long(0, -0), '0_0')
+        self.assertEqual(GeneralUtils.floor_lat_long(22, -0), '20_0')
+        self.assertEqual(GeneralUtils.floor_lat_long(-2, 4, 3), '-3_3')
         return

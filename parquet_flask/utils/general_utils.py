@@ -62,7 +62,7 @@ class GeneralUtils:
             raise ValueError(f'interval cannot be 0')
         interval_lat = divmod(latitude, interval)
         interval_lon = divmod(longitude, interval)
-        return f'{latitude - interval_lat[1]}:{longitude - interval_lon[1]}'
+        return f'{latitude - interval_lat[1]}_{longitude - interval_lon[1]}'
 
     @staticmethod
     def gen_float_list_from_comma_sep_str(input_val: str, expected_count: int):

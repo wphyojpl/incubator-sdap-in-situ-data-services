@@ -14,7 +14,11 @@
 # limitations under the License.
 
 import logging
+import pyspark.sql.functions as pyspark_functions
 
+from pyspark.sql.types import StringType
+
+from parquet_flask.utils.general_utils import GeneralUtils
 from pyspark.sql.dataframe import DataFrame
 
 from parquet_flask.io_logic.cdms_constants import CDMSConstants
@@ -26,6 +30,7 @@ from parquet_flask.utils.file_utils import FileUtils
 from pyspark.sql.functions import to_timestamp, year, month, lit
 
 LOGGER = logging.getLogger(__name__)
+_GEO_SPATIAL_INTERVAL = pyspark_functions.udf(GeneralUtils.floor_lat_long, StringType())
 
 
 class IngestNewJsonFile:
@@ -62,9 +67,10 @@ class IngestNewJsonFile:
             .withColumn(CDMSConstants.platform_code_col, df[CDMSConstants.platform_col][CDMSConstants.code_col])\
             .withColumn(CDMSConstants.job_id_col, lit(job_id))\
             .withColumn(CDMSConstants.provider_col, lit(provider))\
-            .withColumn(CDMSConstants.project_col, lit(project))\
-            .repartition(1)  # combine to 1 data frame to increase size
-            # .withColumn('ingested_date', lit(TimeUtils.get_current_time_str()))
+            .withColumn(CDMSConstants.project_col, lit(project))
+        df: DataFrame = df.withColumn(CDMSConstants.geo_spatial_interval_col, _GEO_SPATIAL_INTERVAL(df[CDMSConstants.lat_col], df[CDMSConstants.lon_col]))
+        df: DataFrame = df.repartition(1)  # combine to 1 data frame to increase size
+        # .withColumn('ingested_date', lit(TimeUtils.get_current_time_str()))
         LOGGER.debug(f'create writer')
         all_partitions = [CDMSConstants.provider_col, CDMSConstants.project_col, CDMSConstants.platform_code_col,
                           CDMSConstants.year_col, CDMSConstants.month_col, CDMSConstants.job_id_col]
