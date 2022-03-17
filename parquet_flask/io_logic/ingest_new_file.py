@@ -14,11 +14,6 @@
 # limitations under the License.
 
 import logging
-import pyspark.sql.functions as pyspark_functions
-
-from pyspark.sql.types import StringType
-
-from parquet_flask.utils.general_utils import GeneralUtils
 from pyspark.sql.dataframe import DataFrame
 
 from parquet_flask.io_logic.cdms_constants import CDMSConstants
@@ -29,8 +24,11 @@ from parquet_flask.utils.file_utils import FileUtils
 
 from pyspark.sql.functions import to_timestamp, year, month, lit
 
+import pyspark.sql.functions as pyspark_functions
+from pyspark.sql.types import StringType
+
 LOGGER = logging.getLogger(__name__)
-_GEO_SPATIAL_INTERVAL = pyspark_functions.udf(GeneralUtils.floor_lat_long, StringType())
+GEOSPATIAL_INTERVAL = 5
 
 
 class IngestNewJsonFile:
@@ -60,6 +58,7 @@ class IngestNewJsonFile:
     def create_df(spark_session, data_list, job_id, provider, project):
         LOGGER.debug(f'creating data frame with length {len(data_list)}')
         df = spark_session.createDataFrame(data_list)
+        # spark_session.sparkContext.addPyFile('/usr/app/parquet_flask/lat_lon_udf.py')
         LOGGER.debug(f'adding columns')
         df: DataFrame = df.withColumn(CDMSConstants.time_obj_col, to_timestamp(CDMSConstants.time_col))\
             .withColumn(CDMSConstants.year_col, year(CDMSConstants.time_col))\
@@ -68,12 +67,14 @@ class IngestNewJsonFile:
             .withColumn(CDMSConstants.job_id_col, lit(job_id))\
             .withColumn(CDMSConstants.provider_col, lit(provider))\
             .withColumn(CDMSConstants.project_col, lit(project))
-        df: DataFrame = df.withColumn(CDMSConstants.geo_spatial_interval_col, _GEO_SPATIAL_INTERVAL(df[CDMSConstants.lat_col], df[CDMSConstants.lon_col]))
+        df: DataFrame = df.withColumn(CDMSConstants.geo_spatial_interval_col, pyspark_functions.udf(lambda latitude, longitude: f'{int(latitude - divmod(latitude, GEOSPATIAL_INTERVAL)[1])}_{int(longitude - divmod(longitude, GEOSPATIAL_INTERVAL)[1])}', StringType())(df[CDMSConstants.lat_col], df[CDMSConstants.lon_col]))
         df: DataFrame = df.repartition(1)  # combine to 1 data frame to increase size
         # .withColumn('ingested_date', lit(TimeUtils.get_current_time_str()))
         LOGGER.debug(f'create writer')
         all_partitions = [CDMSConstants.provider_col, CDMSConstants.project_col, CDMSConstants.platform_code_col,
-                          CDMSConstants.year_col, CDMSConstants.month_col, CDMSConstants.job_id_col]
+                          CDMSConstants.year_col, CDMSConstants.month_col,
+                          CDMSConstants.geo_spatial_interval_col,
+                          CDMSConstants.job_id_col]
         df = df.repartition(1)
         df_writer = df.write
         LOGGER.debug(f'create partitions')
