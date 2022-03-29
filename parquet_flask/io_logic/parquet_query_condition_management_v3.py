@@ -1,5 +1,6 @@
 import logging
 
+from parquet_flask.io_logic.ingest_new_file import GEOSPATIAL_INTERVAL
 from parquet_flask.io_logic.partitioned_parquet_path import PartitionedParquetPath
 from parquet_flask.utils.spatial_utils import SpatialUtils
 from parquet_flask.utils.time_utils import TimeUtils
@@ -189,7 +190,7 @@ class ParquetQueryConditionManagementV3:
         if self.__query_props.min_lat_lon is None or self.__query_props.max_lat_lon is None:
             self.__is_extending_base = False
             return
-        lat_lon_intervals = SpatialUtils.generate_lat_lon_intervals(tuple(self.__query_props.min_lat_lon), tuple(self.__query_props.max_lat_lon), CDMSConstants.geospatial_interval)
+        lat_lon_intervals = SpatialUtils.generate_lat_lon_intervals(tuple(self.__query_props.min_lat_lon), tuple(self.__query_props.max_lat_lon), GEOSPATIAL_INTERVAL)
         self.__generate_bbox_list(lat_lon_intervals)
         return
 
