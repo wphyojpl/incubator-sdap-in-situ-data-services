@@ -11,6 +11,11 @@ class PartitionedParquetPath:
         self.__platform = None
         self.__year = None
         self.__month = None
+        self.__lat_lon = None
+
+    def set_lat_lon(self, val):
+        self.lat_lon = val
+        return self
 
     def set_provider(self, val):
         self.provider = val
@@ -44,6 +49,19 @@ class PartitionedParquetPath:
         if self.platform is not None:
             column_set[CDMSConstants.platform_code_col] = self.platform
         return column_set
+
+    @property
+    def lat_lon(self):
+        return self.__lat_lon
+
+    @lat_lon.setter
+    def lat_lon(self, val):
+        """
+        :param val:
+        :return: None
+        """
+        self.__lat_lon = val
+        return
 
     @property
     def provider(self):
@@ -127,4 +145,7 @@ class PartitionedParquetPath:
         if self.month is None:
             return parquet_path
         parquet_path = f'{parquet_path}/{CDMSConstants.month_col}={self.month}'
+        if self.lat_lon is None:
+            return parquet_path
+        parquet_path = f'{parquet_path}/{CDMSConstants.geo_spatial_interval_col}={self.lat_lon[0]}_{self.lat_lon[1]}'
         return parquet_path

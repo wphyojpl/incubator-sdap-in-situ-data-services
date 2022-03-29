@@ -42,3 +42,4 @@ class CDMSConstants:
     checksum_cause = 'checksum_cause'
 
     missing_depth_value = -99999
+    geospatial_interval = 5

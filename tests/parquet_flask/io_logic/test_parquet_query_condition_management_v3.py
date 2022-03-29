@@ -38,7 +38,7 @@ class TestGeneralUtilsV3(unittest.TestCase):
                             'depth',
                             'latitude',
                             'longitude']
-        expected_parquet_names = {'s3a://mock-bucket/base-path/provider=mock_provider/project=mock_project/platform_code=123/year=2018/month=3'}
+        expected_parquet_names = {'s3a://mock-bucket/base-path/provider=mock_provider/project=mock_project/platform_code=123/year=2018/month=3/geo_spatial_interval=0_0'}
         self.assertEqual(1, len(condition_manager.stringify_parquet_names()), f'wrong parquet names list length')
         for each_parquet_name in condition_manager.stringify_parquet_names():
             self.assertTrue(each_parquet_name in expected_parquet_names, f'missing in expected_parquet_names: {each_parquet_name}')
@@ -81,12 +81,12 @@ class TestGeneralUtilsV3(unittest.TestCase):
                             'longitude']
         expected_parquet_names = []
         for each in range(3, 13):
-            expected_parquet_names.append(f's3a://mock-bucket/base-path/provider=mock_provider/project=mock_project/platform_code=123/year=2018/month={each}')
+            expected_parquet_names.append(f's3a://mock-bucket/base-path/provider=mock_provider/project=mock_project/platform_code=123/year=2018/month={each}/geo_spatial_interval=0_0')
         for each in range(1, 4):
-            expected_parquet_names.append(f's3a://mock-bucket/base-path/provider=mock_provider/project=mock_project/platform_code=123/year=2019/month={each}')
+            expected_parquet_names.append(f's3a://mock-bucket/base-path/provider=mock_provider/project=mock_project/platform_code=123/year=2019/month={each}/geo_spatial_interval=0_0')
         self.assertEqual(13, len(condition_manager.stringify_parquet_names()), f'wrong parquet names list length')
         for each_parquet_name in condition_manager.stringify_parquet_names():
-            self.assertTrue(each_parquet_name in expected_parquet_names, f'missing in expected_parquet_names: {each_parquet_name}')
+            self.assertTrue(each_parquet_name in expected_parquet_names, f'missing in expected_parquet_names: {each_parquet_name}/geo_spatial_interval=0_0')
         self.assertEqual(condition_manager.conditions, expected_conditions, f'wrong conditions')
         self.assertEqual(condition_manager.columns, expected_columns, f'wrong __columns')
         return

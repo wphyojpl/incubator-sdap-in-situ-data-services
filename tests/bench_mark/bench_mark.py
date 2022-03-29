@@ -415,9 +415,13 @@ time: 2017-03-01T00:00:00Z - 2017-04-30T00:00:00Z -- start_index: 120000 -- tota
 
         :return:
         """
-        self.__start_time = '2017-05-01T00:00:00Z'
-        self.__end_time = '2017-07-30T00:00:00Z'
-        self.__platform_code = '41'
+        self.__start_time = '2017-11-01T00:00:00Z'
+        self.__end_time = '2017-11-30T00:00:00Z'
+        self.__platform_code = '30'
+        self.__provider = 'Florida State University, COAPS'
+        self.__project = 'SAMOS'
+        self.__min_lat_lon = (9.9, 9.9)
+        self.__max_lat_lon = (39.99, 39.99)
         self.__variable = None
         self.__columns = None
 

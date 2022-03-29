@@ -28,7 +28,6 @@ import pyspark.sql.functions as pyspark_functions
 from pyspark.sql.types import StringType
 
 LOGGER = logging.getLogger(__name__)
-GEOSPATIAL_INTERVAL = 5
 
 
 class IngestNewJsonFile:
@@ -67,7 +66,7 @@ class IngestNewJsonFile:
             .withColumn(CDMSConstants.job_id_col, lit(job_id))\
             .withColumn(CDMSConstants.provider_col, lit(provider))\
             .withColumn(CDMSConstants.project_col, lit(project))
-        df: DataFrame = df.withColumn(CDMSConstants.geo_spatial_interval_col, pyspark_functions.udf(lambda latitude, longitude: f'{int(latitude - divmod(latitude, GEOSPATIAL_INTERVAL)[1])}_{int(longitude - divmod(longitude, GEOSPATIAL_INTERVAL)[1])}', StringType())(df[CDMSConstants.lat_col], df[CDMSConstants.lon_col]))
+        df: DataFrame = df.withColumn(CDMSConstants.geo_spatial_interval_col, pyspark_functions.udf(lambda latitude, longitude: f'{int(latitude - divmod(latitude, CDMSConstants.geospatial_interval)[1])}_{int(longitude - divmod(longitude, CDMSConstants.geospatial_interval)[1])}', StringType())(df[CDMSConstants.lat_col], df[CDMSConstants.lon_col]))
         df: DataFrame = df.repartition(1)  # combine to 1 data frame to increase size
         # .withColumn('ingested_date', lit(TimeUtils.get_current_time_str()))
         LOGGER.debug(f'create writer')

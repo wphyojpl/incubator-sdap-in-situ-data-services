@@ -1,6 +1,7 @@
 import logging
 
 from parquet_flask.io_logic.partitioned_parquet_path import PartitionedParquetPath
+from parquet_flask.utils.spatial_utils import SpatialUtils
 from parquet_flask.utils.time_utils import TimeUtils
 from parquet_flask.io_logic.cdms_constants import CDMSConstants
 from parquet_flask.io_logic.query_v2 import QueryProps
@@ -168,6 +169,13 @@ class ParquetQueryConditionManagementV3:
         self.__generate_time_partition_list(min_time, max_time)
         return
 
+    def __generate_bbox_list(self, lat_lon_intervals: list):
+        new_parquet_names = []
+        for each_lat_lon in lat_lon_intervals:
+            new_parquet_names.extend([k.duplicate().set_lat_lon(each_lat_lon) for k in self.parquet_names])
+        self.parquet_names = new_parquet_names
+        return
+
     def __check_bbox(self):
         if self.__query_props.min_lat_lon is not None:
             LOGGER.debug(f'setting Lat-Lon min condition as sql: {self.__query_props.min_lat_lon}')
@@ -177,6 +185,12 @@ class ParquetQueryConditionManagementV3:
             LOGGER.debug(f'setting Lat-Lon max condition as sql: {self.__query_props.max_lat_lon}')
             self.__conditions.append(f"{CDMSConstants.lat_col} <= {self.__query_props.max_lat_lon[0]}")
             self.__conditions.append(f"{CDMSConstants.lon_col} <= {self.__query_props.max_lat_lon[1]}")
+
+        if self.__query_props.min_lat_lon is None or self.__query_props.max_lat_lon is None:
+            self.__is_extending_base = False
+            return
+        lat_lon_intervals = SpatialUtils.generate_lat_lon_intervals(tuple(self.__query_props.min_lat_lon), tuple(self.__query_props.max_lat_lon), CDMSConstants.geospatial_interval)
+        self.__generate_bbox_list(lat_lon_intervals)
         return
 
     def __check_depth(self):
