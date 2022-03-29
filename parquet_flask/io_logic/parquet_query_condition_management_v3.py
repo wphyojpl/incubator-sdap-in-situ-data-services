@@ -204,7 +204,7 @@ class ParquetQueryConditionManagementV3:
         if self.__query_props.max_depth is not None:
             LOGGER.debug(f'setting depth max condition: {self.__query_props.max_depth}')
             depth_conditions.append(f"{CDMSConstants.depth_col} <= {self.__query_props.max_depth}")
-        LOGGER.debug(f'has depth condition. adding missing depth conditon')
+        LOGGER.debug(f'has depth condition. adding missing depth condition')
         if len(depth_conditions) == 1:
             self.__conditions.append(f'({depth_conditions[0]} OR {CDMSConstants.depth_col} == {self.__missing_depth_value})')
             return
@@ -239,8 +239,8 @@ class ParquetQueryConditionManagementV3:
         self.__check_provider()
         self.__check_project()
         self.__check_platform()
-        self.__check_time_range()
         self.__check_bbox()
+        self.__check_time_range()
         self.__check_depth()
         self.__add_variables_filter()
         self.__check_columns()

@@ -139,13 +139,13 @@ class PartitionedParquetPath:
         if self.platform is None:
             return parquet_path
         parquet_path = f'{parquet_path}/{CDMSConstants.platform_code_col}={self.platform}'
+        if self.lat_lon is None:
+            return parquet_path
+        parquet_path = f'{parquet_path}/{CDMSConstants.geo_spatial_interval_col}={self.lat_lon[0]}_{self.lat_lon[1]}'
         if self.year is None:
             return parquet_path
         parquet_path = f'{parquet_path}/{CDMSConstants.year_col}={self.year}'
         if self.month is None:
             return parquet_path
         parquet_path = f'{parquet_path}/{CDMSConstants.month_col}={self.month}'
-        if self.lat_lon is None:
-            return parquet_path
-        parquet_path = f'{parquet_path}/{CDMSConstants.geo_spatial_interval_col}={self.lat_lon[0]}_{self.lat_lon[1]}'
         return parquet_path
