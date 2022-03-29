@@ -71,8 +71,8 @@ class IngestNewJsonFile:
         # .withColumn('ingested_date', lit(TimeUtils.get_current_time_str()))
         LOGGER.debug(f'create writer')
         all_partitions = [CDMSConstants.provider_col, CDMSConstants.project_col, CDMSConstants.platform_code_col,
-                          CDMSConstants.year_col, CDMSConstants.month_col,
                           CDMSConstants.geo_spatial_interval_col,
+                          CDMSConstants.year_col, CDMSConstants.month_col,
                           CDMSConstants.job_id_col]
         df = df.repartition(1)
         df_writer = df.write
