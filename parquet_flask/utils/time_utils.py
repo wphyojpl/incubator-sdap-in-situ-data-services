@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class TimeUtils:
@@ -27,7 +27,7 @@ class TimeUtils:
 
     @staticmethod
     def get_datetime_obj(dt_str, fmt='%Y-%m-%dT%H:%M:%SZ'):
-        return datetime.strptime(dt_str, fmt)
+        return datetime.strptime(dt_str, fmt).replace(tzinfo=timezone.utc)
 
     @staticmethod
     def get_time_str(unix_timestamp, fmt='%Y-%m-%dT%H:%M:%SZ', in_ms=True):
