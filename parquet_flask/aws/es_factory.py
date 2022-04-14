@@ -1,4 +1,3 @@
-
 from parquet_flask.utils.factory_abstract import FactoryAbstract
 
 
