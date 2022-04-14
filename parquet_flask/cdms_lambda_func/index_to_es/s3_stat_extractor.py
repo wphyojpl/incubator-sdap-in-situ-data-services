@@ -15,6 +15,19 @@ class S3StatExtractor:
         self.__bucket = None
 
     @property
+    def s3_url(self):
+        return self.__s3_url
+
+    @s3_url.setter
+    def s3_url(self, val):
+        """
+        :param val:
+        :return: None
+        """
+        self.__s3_url = val
+        return
+
+    @property
     def bucket(self):
         return self.__bucket
 
@@ -131,6 +144,28 @@ class S3StatExtractor:
         self.__month = val
         return
 
+    def to_json(self):
+        out_dict = {
+            's3_url': self.s3_url,
+        }
+        if self.bucket is not None:
+            out_dict['bucket'] = self.bucket
+        if self.name is not None:
+            out_dict['name'] = self.name
+        if self.provider is not None:
+            out_dict[CDMSConstants.provider_col] = self.provider
+        if self.project is not None:
+            out_dict[CDMSConstants.project_col] = self.project
+        if self.platform_code is not None:
+            out_dict[CDMSConstants.platform_code_col] = self.platform_code
+        if self.geo_interval is not None:
+            out_dict[CDMSConstants.geo_spatial_interval_col] = self.geo_interval
+        if self.year is not None:
+            out_dict[CDMSConstants.year_col] = self.year
+        if self.month is not None:
+            out_dict[CDMSConstants.month_col] = self.month
+        return out_dict
+
     def start(self):
         split_s3_url = self.__s3_url.split('://')
         if len(split_s3_url) != 2:
@@ -141,7 +176,7 @@ class S3StatExtractor:
         self.bucket = split_s3_path[0]
         self.name = split_s3_path[-1]
 
-        partition_dict = [k.split('=') for k in split_s3_path[1: -1]]
+        partition_dict = [k.split('=') for k in split_s3_path[1: -1] if '=' in k]
         partition_dict = {k[0]: k[1] for k in partition_dict}
 
         if CDMSConstants.provider_col in partition_dict:
@@ -150,11 +185,11 @@ class S3StatExtractor:
         if CDMSConstants.project_col in partition_dict:
             self.project = partition_dict[CDMSConstants.project_col]
 
-        if CDMSConstants. in partition_dict:
+        if CDMSConstants.platform_code_col in partition_dict:
             self.platform_code = partition_dict[CDMSConstants.platform_code_col]
 
-        if CDMSConstants. in partition_dict:
-            self.platform_code = partition_dict[CDMSConstants.platform_code_col]
+        if CDMSConstants.geo_spatial_interval_col in partition_dict:
+            self.geo_interval = partition_dict[CDMSConstants.geo_spatial_interval_col]
 
         if CDMSConstants.year_col in partition_dict:
             self.year = partition_dict[CDMSConstants.year_col]
@@ -164,6 +199,4 @@ class S3StatExtractor:
 
         if CDMSConstants.job_id_col in partition_dict:
             self.job_id = partition_dict[CDMSConstants.job_id_col]
-
-
         return self
