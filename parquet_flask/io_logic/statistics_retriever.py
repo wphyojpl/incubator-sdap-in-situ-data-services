@@ -145,6 +145,22 @@ class StatisticsRetriever:
         self.min_depth = stats[f'min({CDMSConstants.depth_col})']
         return
 
+    def to_json(self) -> dict:
+        """
+        :return:
+        """
+        return {
+            'total': self.total,
+            'min_datetime': self.min_datetime,
+            'max_datetime': self.max_datetime,
+            'min_depth': self.min_depth,
+            'max_depth': self.max_depth,
+            'min_lat': self.min_lat,
+            'max_lat': self.max_lat,
+            'min_lon': self.min_lon,
+            'max_lon': self.max_lon,
+        }
+
     def start(self):
         stats = self.__input_dataset.select(pyspark_functions.min(CDMSConstants.lat_col),
                                             pyspark_functions.max(CDMSConstants.lat_col),
