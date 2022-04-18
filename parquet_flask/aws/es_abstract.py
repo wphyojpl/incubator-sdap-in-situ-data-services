@@ -45,3 +45,11 @@ class ESAbstract(ABC):
     @abstractmethod
     def query_by_id(self, doc_id):
         return
+
+    @abstractmethod
+    def delete_by_id(self, doc_id, index=None):
+        return
+
+    @abstractmethod
+    def delete_by_query(self, dsl, index=None):
+        return

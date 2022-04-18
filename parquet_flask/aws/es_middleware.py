@@ -183,3 +183,12 @@ class ESMiddleware(ESAbstract):
         if self.get_result_size(result) < 1:
             return None
         return result['hits']['hits'][0]
+
+    def delete_by_id(self, doc_id, index=None):
+        index = self.__validate_index(index)
+        self._engine.delete(index, doc_id)
+        return
+
+    def delete_by_query(self, dsl, index=None):
+        raise NotImplementedError('not yet.')
+
