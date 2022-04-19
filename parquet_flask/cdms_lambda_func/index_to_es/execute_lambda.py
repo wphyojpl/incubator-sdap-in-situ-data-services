@@ -1,6 +1,6 @@
-from parquet_flask.cdms_lambda_func.ingest_s3_to_cdms.ingest_s3_to_cdms import IngestS3ToCdms
+from parquet_flask.cdms_lambda_func.index_to_es.parquet_file_es_indexer import ParquetFileEsIndexer
 
 
 def execute_code(event, context):
-    IngestS3ToCdms().start(event)
+    ParquetFileEsIndexer().start(event)
     return
