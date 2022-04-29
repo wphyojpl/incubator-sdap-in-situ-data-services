@@ -1,24 +1,29 @@
 import os
 
+from tests.get_aws_creds import export_as_env
 
-
+aws_creds = export_as_env()
+for k, v in aws_creds.items():
+    os.environ[k] = v
 os.environ['master_spark_url'] = ''
 os.environ['spark_app_name'] = ''
 os.environ['parquet_file_name'] = ''
-os.environ['aws_access_key_id'] = 'AKIA4LBYFVFVZ5RD6F7O'
-os.environ['aws_secret_access_key'] = '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'
-os.environ['aws_session_token'] = ''
 os.environ['in_situ_schema'] = ''
 os.environ['authentication_type'] = ''
 os.environ['authentication_key'] = ''
 os.environ['parquet_metadata_tbl'] = ''
 
 
+"""
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+export AWS_SESSION_TOKEN="""
+
 from parquet_flask.aws.es_abstract import ESAbstract
 from parquet_flask.aws.es_factory import ESFactory
 
-index = 'test1'
-es_url = 'https://search-insitu-parquet-dev-1-vgwt2bx23o5w3gpnq4afftmvaq.us-west-2.es.amazonaws.com/'
+index = 'parquet_stats_v1'
+es_url = 'https://search-insitu-parquet-dev-1-vgwt2bx23o5w3gpnq4afftmvaq.us-west-2.es.amazonaws.com'
 aws_es: ESAbstract = ESFactory().get_instance('AWS', index=index, base_url=es_url, port=443)
-
+aws_es.index_one({'s3_url': 'test1'}, 'test21', index)
 print(aws_es.query({'query': {'match_all': {}}}))
