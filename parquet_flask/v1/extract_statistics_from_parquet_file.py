@@ -27,7 +27,7 @@ from parquet_flask.utils.general_utils import GeneralUtils
 api = Namespace('extract_stats', description="Querying data")
 LOGGER = logging.getLogger(__name__)
 
-query_model = api.model('query_data_doms', {
+query_model = api.model('extract_stats', {
     's3_key': fields.String(required=True, example=''),
 })
 
