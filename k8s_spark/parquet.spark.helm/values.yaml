@@ -12,6 +12,8 @@ flask_env:
   flask_prefix: "insitu"
   parquet_metadata_tbl: "cdms_parquet_meta_dev_v1"
   spark_config_dict: {"spark.hadoop.fs.s3a.aws.credentials.provider": "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider"}
+  es_url: "https://search-insitu-parquet-dev-1-vgwt2bx23o5w3gpnq4afftmvaq.us-west-2.es.amazonaws.com/"
+  es_port: "443"
 
 aws_creds:
   awskey: 'xxx'

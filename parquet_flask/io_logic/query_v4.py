@@ -23,7 +23,7 @@ from pyspark.sql.types import Row
 from pyspark.sql.utils import AnalysisException
 
 from parquet_flask.io_logic.cdms_schema import CdmsSchema
-from parquet_flask.io_logic.parquet_query_condition_management_v3 import ParquetQueryConditionManagementV3
+from parquet_flask.io_logic.parquet_query_condition_management_v4 import ParquetQueryConditionManagementV4
 from parquet_flask.io_logic.partitioned_parquet_path import PartitionedParquetPath
 from parquet_flask.io_logic.query_v2 import QueryProps
 from parquet_flask.io_logic.cdms_constants import CDMSConstants
@@ -37,9 +37,14 @@ class QueryV4:
     def __init__(self, props=QueryProps()):
         self.__props = props
         config = Config()
-        self.__app_name = config.get_value('spark_app_name')
-        self.__master_spark = config.get_value('master_spark_url')
-        self.__parquet_name = config.get_value('parquet_file_name')
+        self.__app_name = config.get_value(Config.spark_app_name)
+        self.__master_spark = config.get_value(Config.master_spark_url)
+        self.__parquet_name = config.get_value(Config.parquet_file_name)
+        self.__es_config = {
+            'es_url': config.get_value(Config.es_url),
+            'es_index': CDMSConstants.es_index_parquet_stats,
+            'es_port': int(config.get_value(Config.es_port, '443')),
+        }
         self.__parquet_name = self.__parquet_name if not self.__parquet_name.endswith('/') else self.__parquet_name[:-1]
         self.__missing_depth_value = CDMSConstants.missing_depth_value
         self.__conditions = []
@@ -60,7 +65,7 @@ class QueryV4:
         spark = RetrieveSparkSession().retrieve_spark_session(self.__app_name, self.__master_spark)
         return spark
 
-    def get_unioned_read_df(self, condition_manager: ParquetQueryConditionManagementV3, spark: SparkSession) -> DataFrame:
+    def get_unioned_read_df(self, condition_manager: ParquetQueryConditionManagementV4, spark: SparkSession) -> DataFrame:
         if len(condition_manager.parquet_names) < 1:
             read_df: DataFrame = spark.read.schema(CdmsSchema.ALL_SCHEMA).parquet(condition_manager.parquet_name)
             return read_df
@@ -137,7 +142,7 @@ class QueryV4:
         return int(query_result.count())
 
     def search(self, spark_session=None):
-        condition_manager = ParquetQueryConditionManagementV3(self.__parquet_name, self.__missing_depth_value, self.__props)
+        condition_manager = ParquetQueryConditionManagementV4(self.__parquet_name, self.__missing_depth_value, self.__es_config, self.__props)
         condition_manager.manage_query_props()
 
         conditions = ' AND '.join(condition_manager.conditions)
