@@ -147,7 +147,13 @@ class ESMiddleware(ESAbstract):
         index = self.__validate_index(querying_index)
         return self._engine.search(body=dsl, index=index)
 
-    def query_pages(self, dsl, querying_index=None):
+    def query_pages(self, dsl, querying_index=None) -> dict:
+        """
+
+        :param dsl:
+        :param querying_index:
+        :return: dict | {"total": 0, "items": []}
+        """
         if 'sort' not in dsl:
             raise ValueError('missing `sort` in DSL. Make sure sorting is unique')
         index = self.__validate_index(querying_index)
@@ -167,7 +173,10 @@ class ESMiddleware(ESAbstract):
             current_size = len(paged_result['hits']['hits'])
             total_size += current_size
             first_batch['hits']['hits'].extend(paged_result['hits']['hits'])
-        return first_batch
+        return {
+            'total': len(first_batch['hits']['hits']),
+            'items': first_batch['hits']['hits'],
+        }
 
     def query_by_id(self, doc_id):
         index = self.__validate_index(None)
