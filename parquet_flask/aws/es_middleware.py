@@ -159,17 +159,14 @@ class ESMiddleware(ESAbstract):
         }
         LOGGER.debug(f'dsl: {dsl}')
         first_batch = self._engine.search(**params)
-        total_size = self.get_result_size(first_batch)
         current_size = len(first_batch['hits']['hits'])
-        while current_size < total_size:  # need to scroll
-            params['search_after'] = first_batch['hits']['hits'][-1]['sort']
+        total_size = current_size
+        while current_size > 0:
+            dsl['search_after'] = first_batch['hits']['hits'][-1]['sort']
             paged_result = self._engine.search(**params)
-            paged_result_size = len(paged_result['hits']['hits'])
-            if paged_result_size == 0:
-                break
-            else:
-                current_size += paged_result_size
-                first_batch['hits']['hits'].extend(paged_result['hits']['hits'])
+            current_size = len(paged_result['hits']['hits'])
+            total_size += current_size
+            first_batch['hits']['hits'].extend(paged_result['hits']['hits'])
         return first_batch
 
     def query_by_id(self, doc_id):
