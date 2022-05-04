@@ -1,10 +1,8 @@
-import json
 from collections import defaultdict
 
 from parquet_flask.aws.es_factory import ESFactory
 
 from parquet_flask.aws.es_abstract import ESAbstract
-from parquet_flask.cdms_lambda_func.cdms_lambda_constants import CdmsLambdaConstants
 from parquet_flask.io_logic.cdms_constants import CDMSConstants
 from parquet_flask.io_logic.partitioned_parquet_path import PartitionedParquetPath
 from parquet_flask.io_logic.query_v2 import QueryProps
@@ -12,15 +10,18 @@ from parquet_flask.utils.time_utils import TimeUtils
 
 
 class ParquetPathsEsRetriever:
-    def __init__(self, es_url: str, es_index: str, es_port: int, base_path: str, props=QueryProps()):
+    def __init__(self, base_path: str, props=QueryProps()):
         self.__base_path = base_path
         self.__props = props
-        self.__es_url = es_url
-        self.__es_index = es_index
-        self.__es_port = es_port
-        if any([k is None for k in [self.__es_url, self.__es_index]]):
-            raise ValueError(f'invalid env. must have {[CdmsLambdaConstants.es_url, CdmsLambdaConstants.es_index]}')
-        self.__es: ESAbstract = ESFactory().get_instance('AWS', index=self.__es_index, base_url=self.__es_url, port=self.__es_port)
+        self.__es: ESAbstract = None
+
+    def load_es_obj(self, es: ESAbstract):
+        self.__es = es
+        return self
+
+    def load_es_from_config(self, es_url: str, es_index: str, es_port: int):
+        self.__es: ESAbstract = ESFactory().get_instance('AWS', index=es_index, base_url=es_url, port=es_port)
+        return self
 
     def __step_1(self, es_results: [PartitionedParquetPath]):
         base_map = defaultdict(list)
@@ -59,6 +60,8 @@ class ParquetPathsEsRetriever:
   }
 }        :return:
         """
+        if self.__es is None:
+            raise ValueError(f'ES Object is not loaded')
         es_terms = []
         if self.__props.provider is not None:
             es_terms.append({'term': {CDMSConstants.provider_col: self.__props.provider}})
