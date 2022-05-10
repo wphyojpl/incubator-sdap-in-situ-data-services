@@ -68,7 +68,16 @@ class ParquetPathsEsRetriever:
         if self.__props.project is not None:
             es_terms.append({'term': {CDMSConstants.project_col: self.__props.project}})
         if self.__props.platform_code is not None:
-            es_terms.append({'term': {CDMSConstants.platform_code_col: self.__props.platform_code}})
+            if isinstance(self.__props.platform_code, list):
+                es_terms.append({
+                    'bool': {
+                        'should': [
+                            {'term': {CDMSConstants.platform_code_col: k}} for k in self.__props.platform_code
+                        ]
+                    }
+                })
+            else:
+                es_terms.append({'term': {CDMSConstants.platform_code_col: self.__props.platform_code}})
         if self.__props.min_datetime is not None:
             es_terms.append({'range': {'max_datetime': {'gte': TimeUtils.get_datetime_obj(self.__props.min_datetime).timestamp()}}})
         if self.__props.max_datetime is not None:

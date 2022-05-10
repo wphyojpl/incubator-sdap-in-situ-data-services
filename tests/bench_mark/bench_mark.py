@@ -512,6 +512,14 @@ time: 2017-03-01T00:00:00Z - 2017-04-30T00:00:00Z -- start_index: 120000 -- tota
         self.__min_lat_lon = (-25.2, 168.8)
         self.__max_lat_lon = (-25.1, 169.0)
 
+        self.__provider = 'Florida State University, COAPS'
+        self.__project = 'SAMOS'
+        self.__platform_code = '30,31,32'
+        self.__start_time = '2017-01-25T09:00:00Z'
+        self.__end_time = '2017-10-24T09:00:00Z'
+        self.__min_lat_lon = (-44, 100.0)
+        self.__max_lat_lon = (-25.0, 132.38330739034632)
+
         # self.__min_depth = -99
         # self.__max_depth = 0
         # self.__min_lat_lon = (-111, 11)
