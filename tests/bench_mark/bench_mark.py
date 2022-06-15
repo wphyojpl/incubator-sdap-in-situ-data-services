@@ -505,20 +505,20 @@ time: 2017-03-01T00:00:00Z - 2017-04-30T00:00:00Z -- start_index: 120000 -- tota
         return
 
     def custom_pagination_bench_mark(self):
-        self.__start_time = '2018-08-30T00:00:00Z'
-        self.__end_time = '2018-08-31T00:00:00Z'
+        self.__start_time = '2018-01-01T00:00:00Z'
+        self.__end_time = '2018-12-31T00:00:00Z'
         # self.__platform_code = '42,41,30,16,17'
-        self.__platform_code = '42'
-        self.__min_lat_lon = (-25.2, 168.8)
-        self.__max_lat_lon = (-25.1, 169.0)
+        # self.__platform_code = '42'
+        # self.__min_lat_lon = (-25.2, 168.8)
+        # self.__max_lat_lon = (-25.1, 169.0)
 
-        self.__provider = 'Florida State University, COAPS'
-        self.__project = 'SAMOS'
-        self.__platform_code = '30,31,32'
-        self.__start_time = '2017-01-25T09:00:00Z'
-        self.__end_time = '2017-10-24T09:00:00Z'
-        self.__min_lat_lon = (-44, 100.0)
-        self.__max_lat_lon = (-25.0, 132.38330739034632)
+        # self.__provider = 'Florida State University, COAPS'
+        # self.__project = 'SAMOS'
+        # self.__platform_code = '30,31,32'
+        # self.__start_time = '2017-01-25T09:00:00Z'
+        # self.__end_time = '2017-10-24T09:00:00Z'
+        # self.__min_lat_lon = (-44, 100.0)
+        # self.__max_lat_lon = (-25.0, 132.38330739034632)
 
         # self.__min_depth = -99
         # self.__max_depth = 0
@@ -527,6 +527,17 @@ time: 2017-03-01T00:00:00Z - 2017-04-30T00:00:00Z -- start_index: 120000 -- tota
         # self.__provider = 'Florida State University, COAPS'
         # self.__project = 'SAMOS'
         # self.__platform_code = '30'
+        # self.__platform_code = '42'
+        # self.__min_lat_lon = (-25.2, 168.8)
+        # self.__max_lat_lon = (-25.1, 169.0)
+
+        self.__min_depth = -99
+        self.__max_depth = 0
+        self.__min_lat_lon = (10, 11)
+        self.__max_lat_lon = (21, 99)
+        self.__provider = 'Florida State University, COAPS'
+        self.__project = 'SAMOS'
+        self.__platform_code = '30'
 
         # self.__provider = 'Saildrone'
         # self.__project = '1021_atlantic'
@@ -534,7 +545,6 @@ time: 2017-03-01T00:00:00Z - 2017-04-30T00:00:00Z -- start_index: 120000 -- tota
         # self.__start_time = '2019-10-01T00:00:00Z'
         # self.__end_time = '2019-10-16T00:00:00Z'
         #
-
 
         self.__variable = None
         self.__columns = None
