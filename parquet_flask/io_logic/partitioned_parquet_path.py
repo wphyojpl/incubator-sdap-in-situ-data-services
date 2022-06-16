@@ -152,6 +152,9 @@ class PartitionedParquetPath:
             return f'{self.lat_lon[0]}_{self.lat_lon[1]}'
         raise TypeError(f'unknown lat_lon type: {type(self.lat_lon)}. value: {self.lat_lon}')
 
+    def __str__(self) -> str:
+        return self.generate_path()
+
     def generate_path(self):
         parquet_path = self.__base_name
         if self.provider is None:

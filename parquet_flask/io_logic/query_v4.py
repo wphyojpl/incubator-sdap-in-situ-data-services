@@ -65,12 +65,27 @@ class QueryV4:
         spark = RetrieveSparkSession().retrieve_spark_session(self.__app_name, self.__master_spark)
         return spark
 
+    def __strip_duplicates_maintain_order(self, condition_manager: ParquetQueryConditionManagementV4):
+        distinct_list = []
+        distinct_set = set([])
+        for each in condition_manager.parquet_names:
+            each: PartitionedParquetPath = each
+            parquet_path = each.generate_path()
+            if parquet_path in distinct_set:
+                continue
+            distinct_set.add(parquet_path)
+            distinct_list.append(each)
+        return distinct_list
+
     def get_unioned_read_df(self, condition_manager: ParquetQueryConditionManagementV4, spark: SparkSession) -> DataFrame:
         if len(condition_manager.parquet_names) < 1:
             read_df: DataFrame = spark.read.schema(CdmsSchema.ALL_SCHEMA).parquet(condition_manager.parquet_name)
             return read_df
         read_df_list = []
-        for each in condition_manager.parquet_names:
+        LOGGER.warning(f'length of parquet_names: {len(condition_manager.parquet_names)}')
+        distinct_parquet_names = self.__strip_duplicates_maintain_order(condition_manager)
+        LOGGER.warning(f'length of distinct_parquet_names: {len(distinct_parquet_names)}')
+        for each in distinct_parquet_names:
             each: PartitionedParquetPath = each
             try:
                 temp_df: DataFrame = spark.read.schema(CdmsSchema.ALL_SCHEMA).parquet(each.generate_path())
@@ -119,6 +134,11 @@ class QueryV4:
                 new_index = i
                 break
         if new_index < 0:
+            LOGGER.warning(f'comparing sha256: {self.__props.marker_platform_code}')
+            for each_row in result_head:
+                each_row: Row = each_row
+                each_sha_256 = GeneralUtils.gen_sha_256_json_obj(each_row.asDict())
+                LOGGER.warning(f'each row: {str(each_row)}. each_sha_256: {each_sha_256}')
             raise ValueError(f'cannot find existing row. It should not happen.')
         result_page = query_result.take(self.__props.size + new_index + 1)
         result_tail = result_page[new_index + 1:]

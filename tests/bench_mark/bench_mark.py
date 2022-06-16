@@ -7,7 +7,8 @@ from tests.bench_mark.func_exec_time_decorator import func_exec_time_decorator
 
 class BenchMark:
     def __init__(self):
-        self.__cdms_domain = 'http://localhost:30801/insitu'
+        # self.__cdms_domain = 'http://localhost:30801/insitu'
+        self.__cdms_domain = 'http://localhost:8083/insitu'
         # self.__cdms_domain = 'https://doms.jpl.nasa.gov/insitu'
         # self.__cdms_domain = 'https://a106a87ec5ba747c5915cc0ec23c149f-881305611.us-west-2.elb.amazonaws.com/insitu'
         self.__size = 100
@@ -533,8 +534,8 @@ time: 2017-03-01T00:00:00Z - 2017-04-30T00:00:00Z -- start_index: 120000 -- tota
 
         self.__min_depth = -99
         self.__max_depth = 0
-        self.__min_lat_lon = (10, 11)
-        self.__max_lat_lon = (21, 99)
+        self.__min_lat_lon = (-80, -100)
+        self.__max_lat_lon = (20, 100)
         self.__provider = 'Florida State University, COAPS'
         self.__project = 'SAMOS'
         self.__platform_code = '30'

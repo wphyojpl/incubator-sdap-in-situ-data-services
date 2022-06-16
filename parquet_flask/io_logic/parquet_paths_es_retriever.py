@@ -1,3 +1,4 @@
+import logging
 from collections import defaultdict
 
 from parquet_flask.aws.es_factory import ESFactory
@@ -7,6 +8,8 @@ from parquet_flask.io_logic.cdms_constants import CDMSConstants
 from parquet_flask.io_logic.partitioned_parquet_path import PartitionedParquetPath
 from parquet_flask.io_logic.query_v2 import QueryProps
 from parquet_flask.utils.time_utils import TimeUtils
+
+LOGGER = logging.getLogger(__name__)
 
 
 class ParquetPathsEsRetriever:
