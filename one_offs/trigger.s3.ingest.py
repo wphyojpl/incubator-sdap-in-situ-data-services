@@ -10,8 +10,8 @@ if __name__ == '__main__':
     # os.environ['master_spark_url'] = ''
     # os.environ['spark_app_name'] = ''
     # os.environ['parquet_file_name'] = ''
-    # os.environ['aws_access_key_id'] = 'AKIA4LBYFVFVZ5RD6F7O'
-    # os.environ['aws_secret_access_key'] = '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'
+    # os.environ['aws_access_key_id'] = ''
+    # os.environ['aws_secret_access_key'] = ''
     # os.environ['aws_session_token'] = ''
     # os.environ['in_situ_schema'] = ''
     # os.environ['authentication_type'] = ''
@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     os.environ[LambdaFuncEnv.LOG_LEVEL] = '20'
     os.environ[LambdaFuncEnv.CDMS_DOMAIN] = 'http://localhost:9801/insitu'
-    os.environ[LambdaFuncEnv.CDMS_BEARER_TOKEN] = 'TW9jay1DRE1TLUZsYXNrLVRva2Vu'
+    os.environ[LambdaFuncEnv.CDMS_BEARER_TOKEN] = 'aaa'
     os.environ[LambdaFuncEnv.PARQUET_META_TBL_NAME] = 'cdms_parquet_meta_dev_v1'
     from parquet_flask.cdms_lambda_func.ingest_s3_to_cdms.ingest_s3_to_cdms import IngestS3ToCdms
     from parquet_flask.aws.aws_s3 import AwsS3
