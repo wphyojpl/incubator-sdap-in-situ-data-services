@@ -85,6 +85,7 @@ class QueryV4:
         LOGGER.warning(f'length of parquet_names: {len(condition_manager.parquet_names)}')
         distinct_parquet_names = self.__strip_duplicates_maintain_order(condition_manager)
         LOGGER.warning(f'length of distinct_parquet_names: {len(distinct_parquet_names)}')
+        LOGGER.warning(f'distinct_parquet_names: {distinct_parquet_names}')
         for each in distinct_parquet_names:
             each: PartitionedParquetPath = each
             try:

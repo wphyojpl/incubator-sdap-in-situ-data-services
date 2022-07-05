@@ -99,9 +99,14 @@ class ParquetPathsEsRetriever:
                 }
             },
             'sort': [
-                {'s3_url': {'order': 'asc'}}
+                {'min_datetime': {'order': 'asc'}},
+                {CDMSConstants.platform_code_col: {'order': 'asc'}},
+                {'min_lat': {'order': 'asc'}},
+                {'min_lon': {'order': 'asc'}},
+                {'s3_url': {'order': 'asc'}},
             ]
         }
+        #         self.__sorting_columns = [CDMSConstants.time_col, CDMSConstants.platform_code_col, CDMSConstants.depth_col, CDMSConstants.lat_col, CDMSConstants.lon_col]
         result = self.__es.query_pages(es_dsl)
         result = [PartitionedParquetPath(self.__base_path).load_from_es(k['_source']) for k in result['items']]
         return result
