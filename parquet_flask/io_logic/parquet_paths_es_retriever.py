@@ -106,6 +106,8 @@ class ParquetPathsEsRetriever:
                 {'s3_url': {'order': 'asc'}},
             ]
         }
+        import json
+        LOGGER.warning(f'es_dsl: {json.dumps(es_dsl)}')
         #         self.__sorting_columns = [CDMSConstants.time_col, CDMSConstants.platform_code_col, CDMSConstants.depth_col, CDMSConstants.lat_col, CDMSConstants.lon_col]
         result = self.__es.query_pages(es_dsl)
         result = [PartitionedParquetPath(self.__base_path).load_from_es(k['_source']) for k in result['items']]

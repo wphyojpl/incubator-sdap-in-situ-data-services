@@ -63,6 +63,7 @@ class QueryV4:
         return spark
 
     def __strip_duplicates_maintain_order(self, condition_manager: ParquetQueryConditionManagementV4):
+        LOGGER.warning(f'length of parquet_names: {len(condition_manager.parquet_names)}')
         distinct_list = []
         distinct_set = set([])
         for each in condition_manager.parquet_names:
@@ -72,6 +73,8 @@ class QueryV4:
                 continue
             distinct_set.add(parquet_path)
             distinct_list.append(each)
+        LOGGER.warning(f'length of distinct_parquet_names: {len(distinct_list)}')
+        LOGGER.warning(f'distinct_parquet_names: {distinct_set}')
         return distinct_list
 
     def get_unioned_read_df(self, condition_manager: ParquetQueryConditionManagementV4, spark: SparkSession) -> DataFrame:
@@ -79,10 +82,7 @@ class QueryV4:
             read_df: DataFrame = spark.read.schema(CdmsSchema.ALL_SCHEMA).parquet(condition_manager.parquet_name)
             return read_df
         read_df_list = []
-        LOGGER.warning(f'length of parquet_names: {len(condition_manager.parquet_names)}')
         distinct_parquet_names = self.__strip_duplicates_maintain_order(condition_manager)
-        LOGGER.warning(f'length of distinct_parquet_names: {len(distinct_parquet_names)}')
-        LOGGER.warning(f'distinct_parquet_names: {distinct_parquet_names}')
         for each in distinct_parquet_names:
             each: PartitionedParquetPath = each
             try:
