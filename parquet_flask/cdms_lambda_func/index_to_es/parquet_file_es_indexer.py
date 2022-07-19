@@ -26,7 +26,7 @@ class ParquetFileEsIndexer:
         s3_stat = S3StatExtractor(self.__s3_url).start()
         s3_bucket, s3_key = AwsS3().split_s3_url(self.__s3_url)
         parquet_stat = ParquetStatExtractor().start(s3_key)
-        self.__es.index_one({'s3_url': self.__s3_url, **s3_stat.to_json(), **parquet_stat}, s3_stat.name)
+        self.__es.index_one({'s3_url': self.__s3_url, **s3_stat.to_json(), **parquet_stat}, s3_stat.s3_url)
         return
 
     def remove_file(self):

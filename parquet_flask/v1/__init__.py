@@ -24,6 +24,7 @@ from .replace_json_s3 import api as replace_parquet_json_s3
 from .query_data import api as query_data
 from .query_data_doms import api as query_data_doms
 from .extract_statistics_from_parquet_file import api as extract_statistics_from_parquet_file
+from .sub_collection_statistics_endpoint import api as sub_collection_statistics_endpoint
 from .query_data_doms_custom_pagination import api as query_data_doms_custom_pagination
 from ..io_logic.cdms_constants import CDMSConstants
 
@@ -49,3 +50,4 @@ api.add_namespace(query_data)
 api.add_namespace(query_data_doms)
 api.add_namespace(query_data_doms_custom_pagination)
 api.add_namespace(extract_statistics_from_parquet_file)
+api.add_namespace(sub_collection_statistics_endpoint)
