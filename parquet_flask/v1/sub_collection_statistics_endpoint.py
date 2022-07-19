@@ -28,7 +28,7 @@ from parquet_flask.utils.general_utils import GeneralUtils
 api = Namespace('sub_collection_statistics', description="Querying data")
 LOGGER = logging.getLogger(__name__)
 
-query_model = api.model('extract_stats', {
+query_model = api.model('sub_collection_statistics', {
     'platform': fields.String(required=True, example='30,3B'),
     'provider': fields.Integer(required=True, example=0),
     'project': fields.Integer(required=True, example=0),

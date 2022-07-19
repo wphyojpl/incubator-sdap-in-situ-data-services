@@ -16,7 +16,7 @@ class SubCollectionStatistics:
     def __init__(self):
         config = Config()
         self.__es: ESAbstract = ESFactory().get_instance('AWS',
-                                                         index='parquet_stats_v1',
+                                                         index=CDMSConstants.es_index_parquet_stats,
                                                          base_url=config.get_value(Config.es_url),
                                                          port=int(config.get_value(Config.es_port, '443')))
         self.__provider = None
@@ -257,6 +257,6 @@ class SubCollectionStatistics:
             }
         }
         LOGGER.warning(f'es_dsl: {json.dumps(stats_dsl)}')
-        es_result = self.__es.query(stats_dsl, 'parquet_stats_v1')
+        es_result = self.__es.query(stats_dsl, CDMSConstants.es_index_parquet_stats)
         # statistics = {k: v['value'] for k, v in es_result['aggregations'].items()}
         return self.__restructure_stats(es_result['aggregations'])
