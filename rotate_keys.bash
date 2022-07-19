@@ -5,8 +5,8 @@
 # Then run the script.
 # Delete tempfile_please_delete.txt after you have the new credentials.
 
-old_access_key='AKIA4LBYFVFVZI273WOE'
-old_secret_key='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'
+old_access_key='xxx'
+old_secret_key='xxx'
 region=us-west-2
 
 # DO NOT MODIFY BELOW THIS LINE
