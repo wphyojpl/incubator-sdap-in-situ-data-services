@@ -164,4 +164,8 @@ class IngestParquet(Resource):
             query_json['columns'] = [k.strip() for k in request.args.get('columns').split(',')]
         if 'variable' in request.args and request.args.get('variable').strip() != '':
             query_json['variable'] = [k.strip() for k in request.args.get('variable').split(',')]
+
+        if 'device' in request.args:
+            query_json['device'] = [k.strip() for k in request.args.get('device').strip().split(',')]
+            query_json['device'].sort()
         return self.__execute_query(query_json)

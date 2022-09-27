@@ -29,6 +29,7 @@ class CDMSConstants:
     lat_col = 'latitude'
     lon_col = 'longitude'
     depth_col = 'depth'
+    device_col = 'device'
     geo_spatial_interval_col = 'geo_spatial_interval'
 
     s3_url_key = 's3_url'

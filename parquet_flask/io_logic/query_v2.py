@@ -67,9 +67,23 @@ class QueryProps:
         self.__max_datetime = None
         self.__min_lat_lon = None
         self.__max_lat_lon = None
+        self.__device = None
         self.__start_at = 0
         self.__size = 0
         self.__columns = []
+
+    @property
+    def device(self):
+        return self.__device
+
+    @device.setter
+    def device(self, val):
+        """
+        :param val:
+        :return: None
+        """
+        self.__device = val
+        return
 
     @property
     def marker_platform_code(self):
@@ -137,7 +151,7 @@ class QueryProps:
         if 'provider' in input_json:
             self.provider = input_json['provider']
         if 'device' in input_json:
-            self.provider = input_json['device']
+            self.device = input_json['device']
         if 'platform_code' in input_json:
             self.platform_code = input_json['platform_code']
         if 'columns' in input_json:

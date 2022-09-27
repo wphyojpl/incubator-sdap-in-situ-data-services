@@ -160,12 +160,23 @@ class ParquetQueryConditionManagementV4:
         self.__columns = self.__query_props.columns + variable_columns + self.__columns
         return
 
+    def __add_device(self):
+        if len(self.__query_props.device) < 1:
+            return
+        if isinstance(self.__query_props.device, list):
+            comma_sep_devices = ','.join([f"'{k}'" for k in self.__query_props.device])
+            self.__conditions.append(f"{CDMSConstants.device_col} in ({comma_sep_devices})")
+        else:
+            self.__conditions.append(f'{CDMSConstants.device_col} == {self.__query_props.device}')
+        return
+
     def manage_query_props(self):
         self.__check_bbox()
         self.__check_time_range()
         self.__check_depth()
         self.__add_variables_filter()
         self.__check_columns()
+        self.__add_device()
         es_retriever = ParquetPathsEsRetriever(self.__parquet_name, self.__query_props).load_es_from_config(self.__es_config['es_url'], self.__es_config['es_index'], self.__es_config.get('es_port', 443))
         self.__parquet_names = es_retriever.start()
         return

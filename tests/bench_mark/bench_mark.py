@@ -506,40 +506,16 @@ time: 2017-03-01T00:00:00Z - 2017-04-30T00:00:00Z -- start_index: 120000 -- tota
         return
 
     def custom_pagination_bench_mark(self):
-        self.__start_time = '2017-07-03T01:00:00Z'
-        self.__end_time = '2017-07-08T23:00:00Z'
-        # self.__platform_code = '42,41,30,16,17'
-        # self.__platform_code = '42'
-        # self.__min_lat_lon = (-25.2, 168.8)
-        # self.__max_lat_lon = (-25.1, 169.0)
+        self.__start_time = '2012-11-14T14:16:00Z'
+        self.__end_time = '2013-05-22T21:48:00Z'
+        self.__provider = 'SPURS'
+        self.__project = 'SPURS'
+        self.__platform_code = '46'
 
-        # self.__provider = 'Florida State University, COAPS'
-        # self.__project = 'SAMOS'
-        # self.__platform_code = '30,31,32'
-        # self.__start_time = '2017-01-25T09:00:00Z'
-        # self.__end_time = '2017-10-24T09:00:00Z'
-        # self.__min_lat_lon = (-44, 100.0)
-        # self.__max_lat_lon = (-25.0, 132.38330739034632)
-
-        # self.__min_depth = -99
-        # self.__max_depth = 0
-        # self.__min_lat_lon = (-111, 11)
-        # self.__max_lat_lon = (111, 99)
-        # self.__provider = 'Florida State University, COAPS'
-        # self.__project = 'SAMOS'
-        # self.__platform_code = '30'
-        # self.__platform_code = '42'
-        # self.__min_lat_lon = (-25.2, 168.8)
-        # self.__max_lat_lon = (-25.1, 169.0)
-
-        self.__provider = 'NCAR'
-        self.__project = 'ICOADS Release 3.0'
-        self.__platform_code = '30,41,42'
-
-        self.__min_depth = -10
-        self.__max_depth = 10
-        self.__min_lat_lon = (-80, -100)
-        self.__max_lat_lon = (20, 100)
+        self.__min_depth = 10
+        self.__max_depth = 500
+        self.__min_lat_lon = (6, -100)
+        self.__max_lat_lon = (30, 0)
         # self.__provider = 'Florida State University, COAPS'
         # self.__project = 'SAMOS'
         # self.__platform_code = '30'
