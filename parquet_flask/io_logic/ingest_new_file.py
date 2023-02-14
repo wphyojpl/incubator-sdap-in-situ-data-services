@@ -16,6 +16,7 @@
 import logging
 from math import isnan
 from os import environ
+import json
 
 import pandas
 from pyspark.sql.dataframe import DataFrame
@@ -43,15 +44,17 @@ def get_geospatial_interval(project: str) -> int:
     :param project: project name
     :return: geospatial interval
     """
-    geo_spatial_interval_by_project = environ.get(CDMSConstants.geospatial_interval_by_project)
-    if geo_spatial_interval_by_project and \
-        type(geo_spatial_interval_by_project) is dict and \
-        project in geo_spatial_interval_by_project and \
-        type(geo_spatial_interval_by_project[project]) is int:
-
-        return geo_spatial_interval_by_project[project]
-    else:
-        return GEOSPATIAL_INTERVAL
+    interval = GEOSPATIAL_INTERVAL
+    try:
+        geo_spatial_interval_by_project = environ.get(CDMSConstants.geospatial_interval_by_project)
+        if geo_spatial_interval_by_project:
+            geo_spatial_interval_by_project_dict = json.loads(geo_spatial_interval_by_project)
+            if type(geo_spatial_interval_by_project_dict) is dict and \
+            project in geo_spatial_interval_by_project_dict and \
+            type(geo_spatial_interval_by_project_dict[project]) is int:
+                interval = geo_spatial_interval_by_project_dict[project]
+    finally:
+        return interval
 
 
 class IngestNewJsonFile:
