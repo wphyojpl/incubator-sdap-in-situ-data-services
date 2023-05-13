@@ -41,14 +41,12 @@ QUERY_PROPS_SCHEMA = {
         'provider': {'type': 'string'},
         'marker_platform_code': {'type': 'string'},
         'project': {'type': 'string'},
-        'min_depth': {'type': 'number'},
-        'max_depth': {'type': 'number'},
         'min_time': {'type': 'string'},
         'max_time': {'type': 'string'},
         'min_lat_lon': {'type': 'array', 'items': {'type': 'number'}, 'minItems': 2, 'maxItems': 2},
         'max_lat_lon': {'type': 'array', 'items': {'type': 'number'}, 'minItems': 2, 'maxItems': 2},
     },
-    'required': ['start_from', 'size', 'min_depth', 'max_depth', 'min_time', 'max_time', 'min_lat_lon', 'max_lat_lon'],
+    'required': ['start_from', 'size', 'min_time', 'max_time', 'min_lat_lon', 'max_lat_lon'],
 }
 
 
@@ -126,8 +124,6 @@ class QueryProps:
     def from_json(self, input_json):
         self.start_at = input_json['start_from']
         self.size = input_json['size']
-        self.min_depth = input_json['min_depth']
-        self.max_depth = input_json['max_depth']
         self.min_datetime = input_json['min_time']
         self.max_datetime = input_json['max_time']
         self.min_lat_lon = input_json['min_lat_lon']
@@ -138,14 +134,10 @@ class QueryProps:
             self.provider = input_json['provider']
         if 'device' in input_json:
             self.provider = input_json['device']
-        if 'platform_code' in input_json:
-            self.platform_code = input_json['platform_code']
         if 'columns' in input_json:
             self.columns = input_json['columns']
         if 'variable' in input_json:
             self.variable = input_json['variable']
-        if 'marker_platform_code' in input_json:
-            self.marker_platform_code = input_json['marker_platform_code']
         return self
 
     @property

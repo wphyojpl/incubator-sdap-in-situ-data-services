@@ -49,7 +49,7 @@ class QueryV4:
         self.__parquet_name = self.__parquet_name if not self.__parquet_name.endswith('/') else self.__parquet_name[:-1]
         self.__missing_depth_value = CDMSConstants.missing_depth_value
         self.__conditions = []
-        self.__sorting_columns = [CDMSConstants.time_col, CDMSConstants.platform_code_col, CDMSConstants.depth_col, CDMSConstants.lat_col, CDMSConstants.lon_col]
+        self.__sorting_columns = [CDMSConstants.time_col, CDMSConstants.lat_col, CDMSConstants.lon_col]
         self.__set_missing_depth_val()
 
     def __set_missing_depth_val(self):
@@ -132,11 +132,6 @@ class QueryV4:
                 new_index = i
                 break
         if new_index < 0:
-            LOGGER.warning(f'comparing sha256: {self.__props.marker_platform_code}')
-            for each_row in result_head:
-                each_row: Row = each_row
-                each_sha_256 = GeneralUtils.gen_sha_256_json_obj(each_row.asDict())
-                LOGGER.warning(f'each row: {str(each_row)}. each_sha_256: {each_sha_256}')
             raise ValueError(f'cannot find existing row. It should not happen.')
         result_page = query_result.take(self.__props.size + new_index + 1)
         result_tail = result_page[new_index + 1:]

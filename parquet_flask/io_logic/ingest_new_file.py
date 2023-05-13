@@ -83,38 +83,19 @@ class IngestNewJsonFile:
     def create_df(spark_session, data_list, job_id, provider, project):
         LOGGER.debug(f'creating data frame with length {len(data_list)}')
         df = spark_session.createDataFrame(data_list)
-        # spark_session.sparkContext.addPyFile('/usr/app/parquet_flask/lat_lon_udf.py')
         LOGGER.debug(f'adding columns')
-        df: DataFrame = df.withColumn(CDMSConstants.time_obj_col, to_timestamp(CDMSConstants.time_col))\
-            .withColumn(CDMSConstants.year_col, year(CDMSConstants.time_col))\
-            .withColumn(CDMSConstants.month_col, month(CDMSConstants.time_col))\
-            .withColumn(CDMSConstants.platform_code_col, df[CDMSConstants.platform_col][CDMSConstants.code_col])\
-            .withColumn(CDMSConstants.job_id_col, lit(job_id))\
-            .withColumn(CDMSConstants.provider_col, lit(provider))\
-            .withColumn(CDMSConstants.project_col, lit(project))
-        geospatial_interval_dict = get_geospatial_interval(project)
         try:
-            df: DataFrame = df.withColumn(
-                CDMSConstants.geo_spatial_interval_col, 
-                pyspark_functions.udf(
-                    lambda platform_code, latitude, longitude: f'{int(latitude - divmod(latitude, int(geospatial_interval_dict.get(platform_code, GEOSPATIAL_INTERVAL)))[1])}_{int(longitude - divmod(longitude, int(geospatial_interval_dict.get(platform_code, GEOSPATIAL_INTERVAL)))[1])}',
-                    StringType())(
-                        df[CDMSConstants.platform_code_col],
-                        df[CDMSConstants.lat_col],
-                        df[CDMSConstants.lon_col]))
-            df: DataFrame = df.repartition(1)  # combine to 1 data frame to increase size
-            # .withColumn('ingested_date', lit(TimeUtils.get_current_time_str()))
+            df: DataFrame = df.withColumn(CDMSConstants.time_obj_col, to_timestamp(CDMSConstants.time_col))\
+                .withColumn(CDMSConstants.year_col, year(CDMSConstants.time_col))\
+                .withColumn(CDMSConstants.month_col, month(CDMSConstants.time_col))\
+                .withColumn(CDMSConstants.job_id_col, lit(job_id))\
+                .withColumn(CDMSConstants.provider_col, lit(provider))\
+                .withColumn(CDMSConstants.project_col, lit(project))\
+                .repartition(1)  # combine to 1 data frame to increase size
             LOGGER.debug(f'create writer')
-            all_partitions = [
-                CDMSConstants.provider_col, 
-                CDMSConstants.project_col, 
-                CDMSConstants.platform_code_col,
-                CDMSConstants.geo_spatial_interval_col,
-                CDMSConstants.year_col,
-                CDMSConstants.month_col,
-                CDMSConstants.job_id_col
-            ]
-            # df = df.repartition(1)  # XXX: is this line repeated?
+            all_partitions = [CDMSConstants.provider_col, CDMSConstants.project_col,
+                              CDMSConstants.year_col, CDMSConstants.month_col, CDMSConstants.job_id_col]
+            df = df.repartition(1)
             df_writer = df.write
             LOGGER.debug(f'create partitions')
             df_writer = df_writer.partitionBy(all_partitions)
@@ -143,17 +124,7 @@ class IngestNewJsonFile:
             if not FileUtils.file_exist(abs_file_path):
                 raise ValueError('json file does not exist: {}'.format(abs_file_path))
             input_json = FileUtils.read_json(abs_file_path)
-        for each_record in input_json[CDMSConstants.observations_key]:
-            if 'depth' in each_record:
-                each_record['depth'] = float(each_record['depth'])
-            if 'wind_from_direction' in each_record:
-                each_record['wind_from_direction'] = float(each_record['wind_from_direction'])
-            if 'wind_to_direction' in each_record:
-                each_record['wind_to_direction'] = float(each_record['wind_from_direction'])
-        df_writer = self.create_df(
-            self.__sss.retrieve_spark_session(
-                self.__app_name,
-                self.__master_spark),
+        df_writer = self.create_df(self.__sss.retrieve_spark_session(self.__app_name, self.__master_spark),
             input_json[CDMSConstants.observations_key],
             job_id,
             input_json[CDMSConstants.provider_col],
