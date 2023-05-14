@@ -50,29 +50,26 @@ class SubCollectionStatisticsEndpoint(Resource):
         try:
             query_props = QueryProps()
             sub_collection_stats_api = SubCollectionStatistics(query_props)
+
+            # Time range
             if 'startTime' in request.args:
                 query_props.min_datetime = TimeUtils.get_datetime_obj(request.args.get('startTime')).timestamp()
             if 'endTime' in request.args:
                 query_props.max_datetime = TimeUtils.get_datetime_obj(request.args.get('endTime')).timestamp()
 
-            if 'minDepth' in request.args:
-                query_props.min_depth = float(request.args.get('minDepth'))
-            if 'maxDepth' in request.args:
-                query_props.max_depth = float(request.args.get('maxDepth'))
-
+            # Bounding box (lat lon range)
             if 'bbox' in request.args:
                 bounding_box = GeneralUtils.gen_float_list_from_comma_sep_str(request.args.get('bbox'), 4)
                 query_props.min_lat_lon = [bounding_box[1], bounding_box[0]]
                 query_props.max_lat_lon = [bounding_box[3], bounding_box[2]]
 
-            if 'platform' in request.args:
-                query_props.platform_code = [k.strip() for k in request.args.get('platform').strip().split(',')]
-                query_props.platform_code.sort()
+            # Provider and project
             if 'provider' in request.args:
                 query_props.provider = request.args.get('provider')
             if 'project' in request.args:
                 query_props.project = request.args.get('project')
 
+            # Get stats
             sub_collection_stats = sub_collection_stats_api.start()
         except Exception as e:
             LOGGER.exception(f'error while retrieving stats')
