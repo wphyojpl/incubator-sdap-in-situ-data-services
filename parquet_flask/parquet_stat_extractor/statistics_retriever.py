@@ -29,8 +29,6 @@ class StatisticsRetriever:
         self.__total = -1
         self.__min_datetime = None
         self.__max_datetime = None
-        self.__min_depth = None
-        self.__max_depth = None
         self.__min_lat = None
         self.__max_lat = None
         self.__min_lon = None
@@ -173,8 +171,6 @@ class StatisticsRetriever:
             'total': self.total,
             'min_datetime': self.min_datetime,
             'max_datetime': self.max_datetime,
-            'min_depth': self.min_depth,
-            'max_depth': self.max_depth,
             'min_lat': self.min_lat,
             'max_lat': self.max_lat,
             'min_lon': self.min_lon,
@@ -183,14 +179,14 @@ class StatisticsRetriever:
         }
 
     def start(self):
-        stats = self.__input_dataset.select(pyspark_functions.min(CDMSConstants.lat_col),
-                                            pyspark_functions.max(CDMSConstants.lat_col),
-                                            pyspark_functions.min(CDMSConstants.lon_col),
-                                            pyspark_functions.max(CDMSConstants.lon_col),
-                                            pyspark_functions.min(CDMSConstants.depth_col),
-                                            pyspark_functions.max(CDMSConstants.depth_col),
-                                            pyspark_functions.min(CDMSConstants.time_obj_col),
-                                            pyspark_functions.max(CDMSConstants.time_obj_col)).collect()
+        stats = self.__input_dataset.select(
+            pyspark_functions.min(CDMSConstants.lat_col),
+            pyspark_functions.max(CDMSConstants.lat_col),
+            pyspark_functions.min(CDMSConstants.lon_col),
+            pyspark_functions.max(CDMSConstants.lon_col),
+            pyspark_functions.min(CDMSConstants.time_obj_col),
+            pyspark_functions.max(CDMSConstants.time_obj_col)
+        ).collect()
         if len(stats) != 1:
             raise ValueError(f'invalid row count on stats function: {stats}')
 
@@ -201,15 +197,11 @@ class StatisticsRetriever:
         self.min_lon = stats[f'min({CDMSConstants.lon_col})']
         self.max_lon = stats[f'max({CDMSConstants.lon_col})']
 
-        self.min_depth = stats[f'min({CDMSConstants.depth_col})']
-        self.max_depth = stats[f'max({CDMSConstants.depth_col})']
-
         self.min_datetime = stats[f'min({CDMSConstants.time_obj_col})'].timestamp()
         self.max_datetime = stats[f'max({CDMSConstants.time_obj_col})'].timestamp()
 
-        if self.min_depth - CDMSConstants.missing_depth_value == 0:
-            self.__get_min_depth_exclude_missing_val()
         self.__observation_count = {}
+
         for each_obs_key in self.__observation_keys:
             try:
                 obs_count = self.__input_dataset.where(self.__input_dataset[each_obs_key].isNotNull()).count()
