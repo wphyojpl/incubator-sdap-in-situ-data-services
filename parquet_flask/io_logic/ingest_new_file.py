@@ -93,8 +93,13 @@ class IngestNewJsonFile:
                 .withColumn(CDMSConstants.project_col, lit(project))\
                 .repartition(1)  # combine to 1 data frame to increase size
             LOGGER.debug(f'create writer')
-            all_partitions = [CDMSConstants.provider_col, CDMSConstants.project_col,
-                              CDMSConstants.year_col, CDMSConstants.month_col, CDMSConstants.job_id_col]
+            all_partitions = [
+                CDMSConstants.provider_col, 
+                CDMSConstants.project_col,
+                CDMSConstants.site_col,
+                CDMSConstants.year_col, 
+                CDMSConstants.month_col, 
+                CDMSConstants.job_id_col]
             df = df.repartition(1)
             df_writer = df.write
             LOGGER.debug(f'create partitions')
@@ -124,7 +129,8 @@ class IngestNewJsonFile:
             if not FileUtils.file_exist(abs_file_path):
                 raise ValueError('json file does not exist: {}'.format(abs_file_path))
             input_json = FileUtils.read_json(abs_file_path)
-        df_writer = self.create_df(self.__sss.retrieve_spark_session(self.__app_name, self.__master_spark),
+        df_writer = self.create_df(
+            self.__sss.retrieve_spark_session(self.__app_name, self.__master_spark),
             input_json[CDMSConstants.observations_key],
             job_id,
             input_json[CDMSConstants.provider_col],

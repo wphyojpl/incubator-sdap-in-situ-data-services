@@ -49,7 +49,7 @@ class QueryV4:
         self.__parquet_name = self.__parquet_name if not self.__parquet_name.endswith('/') else self.__parquet_name[:-1]
         self.__missing_depth_value = CDMSConstants.missing_depth_value
         self.__conditions = []
-        self.__sorting_columns = [CDMSConstants.time_col, CDMSConstants.lat_col, CDMSConstants.lon_col]
+        self.__sorting_columns = [CDMSConstants.time_col, CDMSConstants.site_col, CDMSConstants.lat_col, CDMSConstants.lon_col]
         self.__set_missing_depth_val()
 
     def __set_missing_depth_val(self):

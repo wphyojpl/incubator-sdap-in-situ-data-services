@@ -138,6 +138,8 @@ class QueryProps:
             self.columns = input_json['columns']
         if 'variable' in input_json:
             self.variable = input_json['variable']
+        if 'site' in input_json:
+            self.site = input_json['site']
         return self
 
     @property
@@ -164,6 +166,15 @@ class QueryProps:
         :return: None
         """
         self.__provider = val
+        return
+
+    @property
+    def site(self) -> list:
+        return self.__site
+    
+    @site.setter
+    def site(self, val: list):
+        self.__site = val
         return
 
     @property

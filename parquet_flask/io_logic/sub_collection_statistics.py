@@ -177,8 +177,8 @@ class SubCollectionStatistics:
                     "projects": [
                         {
                             "project": l['key'],
-                            "platforms": [
-                                self.__restructure_core_stats(k) for k in l['by_platform_code']['buckets']
+                            "site": [
+                                self.__restructure_core_stats(k) for k in l['by_site']['buckets']
                             ]
                         } for l in m['by_project']['buckets']
                     ]
@@ -269,7 +269,12 @@ class SubCollectionStatistics:
                     "aggs": {
                         "by_project": {
                             "terms": {"field": CDMSConstants.project_col},
-                            "aggs": {**normal_agg_stmts, **self.__get_observation_agg_stmts()}
+                            "aggs": {
+                                "by_site": {
+                                    "terms": {"field": CDMSConstants.site_col},
+                                    "aggs": {**normal_agg_stmts, **self.__get_observation_agg_stmts()}
+                                }
+                            }
                         }
                     }
                 }

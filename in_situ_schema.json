@@ -1,252 +1,252 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Cloud-based Data Match-Up Service In Situ Schema",
-  "description": "Schema for in situ data",
-  "properties": {
-    "provider": {
-      "description": "",
-      "type": "string"
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Cloud-based Data Match-Up Service In Situ Schema",
+    "description": "Schema for in situ data",
+    "properties": {
+        "provider": {
+            "description": "",
+            "type": "string"
+        },
+        "project": {
+            "description": "",
+            "type": "string"
+        },
+        "observations": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/observation"
+            },
+            "minItems": 1
+        }
     },
-    "project": {
-      "description": "",
-      "type": "string"
-    },
-    "observations": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/observation"
-      },
-      "minItems": 1
-    }
-  },
-  "definitions": {
-    "observation": {
-      "description": "Description for each variable is copied from CF standard names table found at https://cfconventions.org/Data/cf-standard-names/77/build/cf-standard-name-table.html",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "time": {
-          "description": "Time of the observation",
-          "uri": "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0115/",
-          "type": "string",
-          "format": "date-time"
-        },
-        "latitude": {
-          "description": "Latitude position of the observation",
-          "uri": "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0600/",
-          "type": "number",
-          "minimum": -90,
-          "maximum": 90
-        },
-        "longitude": {
-          "description": "Longitude position of the observation",
-          "uri": "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0554/",
-          "type": "number",
-          "minimum": -180,
-          "maximum": 180
-        },
+    "definitions": {
+        "observation": {
+            "description": "Description for each variable is copied from CF standard names table found at https://cfconventions.org/Data/cf-standard-names/77/build/cf-standard-name-table.html",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "time": {
+                    "description": "Time of the observation",
+                    "uri": "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0115/",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "latitude": {
+                    "description": "Latitude position of the observation",
+                    "uri": "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0600/",
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                },
+                "longitude": {
+                    "description": "Longitude position of the observation",
+                    "uri": "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0554/",
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                },
                 "Qout": {
                     "description": "Rapid Output",
                     "uri": "",
-          "type": "number",
+                    "type": "number",
                     "units": "m3 s-1"
-        },
+                },
                 "site": {
                     "description": "The site where this datapoint was extracted",
                     "uri": "",
                     "type": "string"
-        },
+                },
                 "pm2_5": {
-          "description": "",
+                    "description": "",
                     "uri": "",
-          "type": "number",
+                    "type": "number",
                     "units": "µg/m³"
-        },
+                },
                 "bc": {
-          "description": "",
+                    "description": "",
                     "uri": "",
-          "type": "number",
+                    "type": "number",
                     "units": "µg/m³"
-        },
+                },
                 "no2": {
-          "description": "",
-                    "uri":         "",
-          "type": "number",
-                    "units":       "µg/m³"
-        },
+                    "description": "",
+                    "uri": "",
+                    "type": "number",
+                    "units": "µg/m³"
+                },
                 "co": {
-          "description": "",
-                    "uri":         "",
-          "type": "number",
-                    "units":       "ppb"
-        },
+                    "description": "",
+                    "uri": "",
+                    "type": "number",
+                    "units": "ppb"
+                },
                 "co2": {
-          "description": "",
-                    "uri":         "",
-          "type": "number",
-                    "units":       "ppm"
-        },
+                    "description": "",
+                    "uri": "",
+                    "type": "number",
+                    "units": "ppm"
+                },
                 "no": {
-          "description": "",
-                    "uri":         "",
-          "type": "number",
-                    "units":       "ppb"
-        },
+                    "description": "",
+                    "uri": "",
+                    "type": "number",
+                    "units": "ppb"
+                },
                 "o3": {
-          "description": "",
-                    "uri":         "",
-          "type": "number",
-                    "units":       "ppb"
-        },
+                    "description": "",
+                    "uri": "",
+                    "type": "number",
+                    "units": "ppb"
+                },
                 "pm1": {
-          "description": "",
-                    "uri":         "",
-          "type": "number",
-                    "units":       "pm1"
-        },
+                    "description": "",
+                    "uri": "",
+                    "type": "number",
+                    "units": "pm1"
+                },
                 "pm10": {
-          "description": "",
-                    "uri":         "",
-          "type": "number",
-                    "units":       "µg/m³"
-        },
+                    "description": "",
+                    "uri": "",
+                    "type": "number",
+                    "units": "µg/m³"
+                },
                 "pm25": {
-          "description": "",
-                    "uri":         "",
-          "type": "number",
-                    "units":       "µg/m³"
-        },
+                    "description": "",
+                    "uri": "",
+                    "type": "number",
+                    "units": "µg/m³"
+                },
                 "Streamflow": {
-          "type": "number",
+                    "type": "number",
                     "units": "ft3/s",
                     "uri": "",
                     "description": "Discharge, cubic feet per second"
-        },
+                },
                 "Gage_height": {
-          "type": "number",
+                    "type": "number",
                     "units": "ft",
                     "uri": "",
                     "description": "Gage height, feet"
-        },
+                },
                 "Stream_water_level_elevation_above_NAVD_1988": {
-          "type": "number",
+                    "type": "number",
                     "units": "ft",
                     "uri": "",
                     "description": "Stream water level elevation above NAVD 1988, in feet"
-        },
+                },
                 "Lake_or_reservoir_water_surface_elevation_above_NAVD_1988": {
-          "type": "number",
+                    "type": "number",
                     "units": "ft",
                     "uri": "",
                     "description": "Lake or reservoir water surface elevation above NAVD 1988, feet"
-        },
+                },
                 "Temperature": {
-          "type": "number",
+                    "type": "number",
                     "units": "deg C",
                     "uri": "",
                     "description": "Temperature, water, degrees Celsius"
-        },
+                },
                 "Specific_conductance": {
-          "type": "number",
+                    "type": "number",
                     "units": "uS/cm @25C",
                     "uri": "",
                     "description": "Specific conductance, water, unfiltered, microsiemens per centimeter at 25 degrees Celsius"
-        },
+                },
                 "Turbidity": {
-          "type": "number",
+                    "type": "number",
                     "units": "FNU",
                     "uri": "",
                     "description": "Turbidity, water, unfiltered, monochrome near infra-red LED light, 780-900 nm, detection angle 90 +-2.5 degrees, formazin nephelometric units (FNU)"
-        },
+                },
                 "Suspended_sediment_concentration": {
-          "type": "number",
+                    "type": "number",
                     "units": "mg/l",
                     "uri": "",
                     "description": "Suspended sediment concentration, from uncalibrated sensor, milligrams per liter"
-        },
+                },
                 "Precipitation": {
-          "type": "number",
+                    "type": "number",
                     "units": "in",
                     "uri": "",
                     "description": "Precipitation, total, inches"
-        },
+                },
                 "Depth_to_water_level": {
-          "type": "number",
+                    "type": "number",
                     "units": "ft",
                     "uri": "",
                     "description": "Depth to water level, feet below land surface"
-            },
+                },
                 "Streamflow_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Gage_height_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Stream_water_level_elevation_above_NAVD_1988_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Lake_or_reservoir_water_surface_elevation_above_NAVD_1988_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Temperature_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Specific_conductance_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Turbidity_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Suspended_sediment_concentration_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Precipitation_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "Depth_to_water_level_quality": {
                     "description": "quality",
                     "type": "string"
-            },
+                },
                 "vortex_avg_speed": {
                     "description": "Average speed of the surface velocity",
                     "uri": "",
                     "type": "number",
                     "units": "m/s"
-            },
+                },
                 "vortex_rain": {
                     "description": "Cumulated rain over one hour",
                     "uri": "",
                     "type": "number",
                     "units": "mm/h"
-            },
+                },
                 "vortex_height_rise_speed": {
                     "description": "Average speed of the river level",
                     "uri": "",
                     "type": "number",
                     "units": "m/h"
-        },
+                },
                 "vortex_height": {
                     "description": "Height of the river",
                     "uri": "",
                     "type": "number",
                     "units": "m"
-        }
-      },
-      "required": [
-        "time",
-        "latitude",
+                }
+            },
+            "required": [
+                "time",
+                "latitude",
                 "longitude"
-      ],
+            ],
             "minProperties": 4
+        }
     }
-  }
 }
