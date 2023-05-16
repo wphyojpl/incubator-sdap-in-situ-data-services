@@ -55,4 +55,11 @@ COPY parquet_flask /usr/app/parquet_flask
 
 COPY in_situ_schema.json /etc
 ENV insitu_schema_file=/etc/in_situ_schema.json
+
+ARG es_url
+ENV es_url=$es_url
+
+ARG es_index
+ENV es_index=$es_index
+
 CMD ["parquet_flask.cdms_lambda_func.index_to_es.execute_lambda.execute_code"]

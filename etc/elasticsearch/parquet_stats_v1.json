@@ -17,7 +17,7 @@
       "name": {
         "type": "keyword"
       },
-      "platform_code": {
+      "site": {
         "type": "keyword"
       },
       "project": {
@@ -39,12 +39,6 @@
         "type": "double"
       },
       "max_datetime": {
-        "type": "double"
-      },
-      "min_depth": {
-        "type": "double"
-      },
-      "max_depth": {
         "type": "double"
       },
       "min_lat": {
