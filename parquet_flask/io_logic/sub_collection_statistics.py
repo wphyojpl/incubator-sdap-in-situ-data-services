@@ -91,17 +91,14 @@ class SubCollectionStatistics:
         :return:
         """
         core_stats = {
-            "platform": core_stats['key'],
-            "statistics": {
-                "total": core_stats['totals']['value'],
-                "min_lat_lon": [core_stats['min_lat']['value'], core_stats['min_lon']['value']],
-                "max_lat_lon": [core_stats['max_lat']['value'], core_stats['max_lon']['value']],
-                "min_depth": core_stats['min_depth']['value'],
-                "max_depth": core_stats['max_depth']['value'],
-                "min_datetime": TimeUtils.get_time_str(int(core_stats['min_datetime']['value']), in_ms=False),
-                "max_datetime": TimeUtils.get_time_str(int(core_stats['max_datetime']['value']), in_ms=False),
-                'observation_counts': {k: core_stats[k]['value'] for k in self.__cdms_obs_names}
-            }
+            "site": core_stats['key'],
+            "total": core_stats['totals']['value'],
+            "lat": core_stats['max_lat']['value'],
+            "lon": core_stats['max_lon']['value'],
+            "min_datetime": TimeUtils.get_time_str(int(core_stats['min_datetime']['value']), in_ms=False),
+            "max_datetime": TimeUtils.get_time_str(int(core_stats['max_datetime']['value']), in_ms=False),
+            'observation_counts': {k: core_stats[k]['value'] for k in self.__cdms_obs_names},
+            'units': {k: self.__insitu_schema['definitions']['observation']['properties'][k]['units'] for k in self.__cdms_obs_names}
         }
         LOGGER.debug(f'core_stats: {core_stats}')
         return core_stats
@@ -177,7 +174,7 @@ class SubCollectionStatistics:
                     "projects": [
                         {
                             "project": l['key'],
-                            "site": [
+                            "sites": [
                                 self.__restructure_core_stats(k) for k in l['by_site']['buckets']
                             ]
                         } for l in m['by_project']['buckets']
