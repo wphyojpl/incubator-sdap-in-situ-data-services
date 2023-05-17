@@ -11,6 +11,11 @@
             "description": "",
             "type": "string"
         },
+        "site": {
+            "description": "The site where this datapoint was extracted",
+            "uri": "",
+            "type": "string"
+        },
         "observations": {
             "type": "array",
             "items": {
@@ -50,11 +55,6 @@
                     "uri": "",
                     "type": "number",
                     "units": "m3 s-1"
-                },
-                "site": {
-                    "description": "The site where this datapoint was extracted",
-                    "uri": "",
-                    "type": "string"
                 },
                 "pm2_5": {
                     "description": "",

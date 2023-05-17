@@ -22,7 +22,7 @@ class CdmsSchema:
         StructField('provider', StringType(), True),
         StructField('project', StringType(), True),
         StructField('time', StringType(), True),
-            StructField('time_obj', TimestampType(), True),
+        StructField('time_obj', TimestampType(), True),
         StructField('latitude', DoubleType(), True),
         StructField('longitude', DoubleType(), True),
         StructField('site', StringType(), True),
