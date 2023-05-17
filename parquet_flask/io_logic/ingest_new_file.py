@@ -80,7 +80,7 @@ class IngestNewJsonFile:
         return
 
     @staticmethod
-    def create_df(spark_session, data_list, job_id, provider, project):
+    def create_df(spark_session, data_list, job_id, provider, project, site):
         LOGGER.debug(f'creating data frame with length {len(data_list)}')
         df = spark_session.createDataFrame(data_list)
         LOGGER.debug(f'adding columns')
@@ -91,6 +91,7 @@ class IngestNewJsonFile:
                 .withColumn(CDMSConstants.job_id_col, lit(job_id))\
                 .withColumn(CDMSConstants.provider_col, lit(provider))\
                 .withColumn(CDMSConstants.project_col, lit(project))\
+                .withColumn(CDMSConstants.site_col, lit(site))\
                 .repartition(1)  # combine to 1 data frame to increase size
             LOGGER.debug(f'create writer')
             all_partitions = [
@@ -134,7 +135,8 @@ class IngestNewJsonFile:
             input_json[CDMSConstants.observations_key],
             job_id,
             input_json[CDMSConstants.provider_col],
-            input_json[CDMSConstants.project_col])
+            input_json[CDMSConstants.project_col],
+            input_json[CDMSConstants.site_col])
         df_writer.mode(self.__mode).parquet(self.__parquet_name, compression='GZIP')  # snappy GZIP
         LOGGER.debug(f'finished writing parquet')
         return len(input_json[CDMSConstants.observations_key])

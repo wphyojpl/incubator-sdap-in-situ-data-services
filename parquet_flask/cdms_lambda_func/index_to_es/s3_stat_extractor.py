@@ -21,7 +21,7 @@ class S3StatExtractor:
         self.__s3_url = s3_url
         self.__provider = None
         self.__project = None
-        self.__platform_code = None
+        self.__site = None
         self.__geo_interval = None
         self.__year = None
         self.__month = None
@@ -108,16 +108,16 @@ class S3StatExtractor:
         return
 
     @property
-    def platform_code(self):
-        return self.__platform_code
+    def site(self):
+        return self.__site
 
-    @platform_code.setter
-    def platform_code(self, val):
+    @site.setter
+    def site(self, val):
         """
         :param val:
         :return: None
         """
-        self.__platform_code = val
+        self.__site = val
         return
 
     @property
@@ -171,8 +171,8 @@ class S3StatExtractor:
             out_dict[CDMSConstants.provider_col] = self.provider
         if self.project is not None:
             out_dict[CDMSConstants.project_col] = self.project
-        if self.platform_code is not None:
-            out_dict[CDMSConstants.platform_code_col] = self.platform_code
+        if self.site is not None:
+            out_dict[CDMSConstants.site_col] = self.site
         if self.geo_interval is not None:
             out_dict[CDMSConstants.geo_spatial_interval_col] = self.geo_interval
         if self.year is not None:
@@ -200,8 +200,8 @@ class S3StatExtractor:
         if CDMSConstants.project_col in partition_dict:
             self.project = partition_dict[CDMSConstants.project_col]
 
-        if CDMSConstants.platform_code_col in partition_dict:
-            self.platform_code = partition_dict[CDMSConstants.platform_code_col]
+        if CDMSConstants.site_col in partition_dict:
+            self.site = partition_dict[CDMSConstants.site_col]
 
         if CDMSConstants.geo_spatial_interval_col in partition_dict:
             self.geo_interval = partition_dict[CDMSConstants.geo_spatial_interval_col]
