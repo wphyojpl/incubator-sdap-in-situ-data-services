@@ -31,7 +31,17 @@ This is a detailed guide to deploy SDAP In-Situ to AWS. Although there is a plan
 
         docker build -f docker/parquet.spark.3.2.0.r44.Dockerfile -t {your-tag} .
 
-### Push docker container
+- push docker container to a docker container registry
+
+        docker push {your-tag}
+
+### Build Lambda Function
+- build docker container using [parquet.lambda.Dockerfile](docker/parquet.lambda.Dockerfile)
+
+        docker build -f docker/parquet.spark.lambda.Dockerfile -t {your-tag}
+        docker build --build-arg es_url={opensearch-url} --build-arg es_index=parquet_stats_alias -f docker/p
+arquet.lambda.Dockerfile -t {your-tag} .
+
 - push docker container to a docker container registry
 
         docker push {your-tag}
