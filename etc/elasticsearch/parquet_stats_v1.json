@@ -17,7 +17,7 @@
       "name": {
         "type": "keyword"
       },
-      "site": {
+      "platform_id": {
         "type": "keyword"
       },
       "project": {

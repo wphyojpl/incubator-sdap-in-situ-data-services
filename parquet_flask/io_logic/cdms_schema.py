@@ -25,7 +25,8 @@ class CdmsSchema:
         StructField('time_obj', TimestampType(), True),
         StructField('latitude', DoubleType(), True),
         StructField('longitude', DoubleType(), True),
-        StructField('site', StringType(), True),
+        StructField('platform', MapType(StringType(), StringType()), True),
+        StructField('platform_id', StringType(), True),
 
         # AQ
         StructField('pm2_5', DoubleType(), True),

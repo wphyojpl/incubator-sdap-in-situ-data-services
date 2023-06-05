@@ -37,7 +37,7 @@ QUERY_PROPS_SCHEMA = {
             'items': {'type': 'string'},
             'minItems': 0,
         },
-        'platform_code': {'type': 'array', 'items': {'type': 'string'}, 'minItems': 1},
+        'platform_id': {'type': 'array', 'items': {'type': 'string'}, 'minItems': 1},
         'provider': {'type': 'string'},
         'marker_platform_code': {'type': 'string'},
         'project': {'type': 'string'},
@@ -55,7 +55,7 @@ class QueryProps:
         self.__variable: list = []
         self.__marker_platform_code = None
         self.__quality_flag = False
-        self.__platform_code = None
+        self.__platform_id = None
         self.__project = None
         self.__provider = None
         self.__device = None
@@ -109,16 +109,16 @@ class QueryProps:
         return
 
     @property
-    def platform_code(self) -> list:
-        return self.__platform_code
+    def platform_id(self) -> list:
+        return self.__platform_id
 
-    @platform_code.setter
-    def platform_code(self, val):
+    @platform_id.setter
+    def platform_id(self, val):
         """
         :param val:
         :return: None
         """
-        self.__platform_code = val
+        self.__platform_id = val
         return
 
     def from_json(self, input_json):
@@ -134,12 +134,12 @@ class QueryProps:
             self.provider = input_json['provider']
         if 'device' in input_json:
             self.provider = input_json['device']
+        if 'platform_id' in input_json:
+            self.platform_id = input_json['platform_id']
         if 'columns' in input_json:
             self.columns = input_json['columns']
         if 'variable' in input_json:
             self.variable = input_json['variable']
-        if 'site' in input_json:
-            self.site = input_json['site']
         return self
 
     @property
@@ -166,15 +166,6 @@ class QueryProps:
         :return: None
         """
         self.__provider = val
-        return
-
-    @property
-    def site(self) -> list:
-        return self.__site
-    
-    @site.setter
-    def site(self, val: list):
-        self.__site = val
         return
 
     @property

@@ -91,7 +91,7 @@ class SubCollectionStatistics:
         :return:
         """
         core_stats = {
-            "site": core_stats['key'],
+            "platform": core_stats['key'],
             "total": core_stats['totals']['value'],
             "lat": core_stats['max_lat']['value'],
             "lon": core_stats['max_lon']['value'],
@@ -174,8 +174,8 @@ class SubCollectionStatistics:
                     "projects": [
                         {
                             "project": l['key'],
-                            "sites": [
-                                self.__restructure_core_stats(k) for k in l['by_site']['buckets']
+                            "platforms": [
+                                self.__restructure_core_stats(k) for k in l['by_platform_id']['buckets']
                             ]
                         } for l in m['by_project']['buckets']
                     ]
@@ -201,6 +201,19 @@ class SubCollectionStatistics:
             es_terms.append({'term': {CDMSConstants.provider_col: self.__query_props.provider}})
         if self.__query_props.project is not None:
             es_terms.append({'term': {CDMSConstants.project_col: self.__query_props.project}})
+
+        # Platforms
+        if self.__query_props.platform_id is not None:
+            if isinstance(self.__query_props.platform_id, list):
+                es_terms.append({
+                    'bool': {
+                        'should': [
+                            {'term': {CDMSConstants.platform_id_col: k}} for k in self.__query_props.platform_id
+                        ]
+                    }
+                })
+            else:
+                es_terms.append({'term': {CDMSConstants.platform_id_col: self.__query_props.platform_id}})
 
         # Time range
         if self.__query_props.min_datetime is not None and self.__query_props.max_datetime is not None:
@@ -267,8 +280,8 @@ class SubCollectionStatistics:
                         "by_project": {
                             "terms": {"field": CDMSConstants.project_col},
                             "aggs": {
-                                "by_site": {
-                                    "terms": {"field": CDMSConstants.site_col},
+                                "by_platform_id": {
+                                    "terms": {"field": CDMSConstants.platform_id_col},
                                     "aggs": {**normal_agg_stmts, **self.__get_observation_agg_stmts()}
                                 }
                             }

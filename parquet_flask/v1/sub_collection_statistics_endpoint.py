@@ -69,10 +69,10 @@ class SubCollectionStatisticsEndpoint(Resource):
             if 'project' in request.args:
                 query_props.project = request.args.get('project')
             
-            # Site
-            if 'site' in request.args:
-                query_props.site = [k.strip() for k in request.args.get('site').strip().split(',')]
-                query_props.site.sort()
+            # Platform
+            if 'platform' in request.args:
+                query_props.platform_id = [k.strip() for k in request.args.get('platform').strip().split(',')]
+                query_props.platform_id.sort()
 
             # Get stats
             sub_collection_stats = sub_collection_stats_api.start()

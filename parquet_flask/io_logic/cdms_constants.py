@@ -18,9 +18,15 @@ class CDMSConstants:
     time_col = 'time'
     provider_col = 'provider'
     project_col = 'project'
+
+    # Platform related
     platform_code_col = 'platform_code'
+    platform_id_col = 'platform_id'
+    id_col = 'id'
     platform_col = 'platform'
     code_col = 'code'
+
+
     job_id_col = 'job_id'
     time_obj_col = 'time_obj'
     year_col = 'year'
@@ -30,7 +36,6 @@ class CDMSConstants:
     lon_col = 'longitude'
     depth_col = 'depth'
     geo_spatial_interval_col = 'geo_spatial_interval'
-    site_col = 'site'
 
     s3_url_key = 's3_url'
     uuid_key = 'uuid'

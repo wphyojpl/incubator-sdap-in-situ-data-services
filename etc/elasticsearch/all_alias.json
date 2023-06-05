@@ -1,7 +1,8 @@
 {
     "actions" : [
-        {"remove" : {"index" : "parquet_stats_v1", "alias" : "parquet_stats_alias"}},
-        {"add" : {"index" : "parquet_stats_adjustable_geo", "alias" : "parquet_stats_alias"}},
-        {"add" : {"index" : "entry_file_records_v1", "alias" : "entry_file_records_alias"}}
+        {"remove" : {"index" : "parquet_stats_v2", "alias" : "parquet_stats_alias"}},
+        {"remove" : {"index" : "entry_file_records_v2", "alias" : "entry_file_records_alias"}},
+        {"add" : {"index" : "parquet_stats_v3", "alias" : "parquet_stats_alias"}},
+        {"add" : {"index" : "entry_file_records_v3", "alias" : "entry_file_records_alias"}}
     ]
 }

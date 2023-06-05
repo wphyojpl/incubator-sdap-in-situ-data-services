@@ -22,7 +22,6 @@ import pandas
 from pyspark.sql.dataframe import DataFrame
 
 from parquet_flask.io_logic.cdms_constants import CDMSConstants
-from parquet_flask.io_logic.cdms_schema import CdmsSchema
 from parquet_flask.io_logic.retrieve_spark_session import RetrieveSparkSession
 from parquet_flask.io_logic.sanitize_record import SanitizeRecord
 from parquet_flask.utils.config import Config
@@ -80,7 +79,7 @@ class IngestNewJsonFile:
         return
 
     @staticmethod
-    def create_df(spark_session, data_list, job_id, provider, project, site):
+    def create_df(spark_session, data_list, job_id, provider, project):
         LOGGER.debug(f'creating data frame with length {len(data_list)}')
         df = spark_session.createDataFrame(data_list)
         LOGGER.debug(f'adding columns')
@@ -91,13 +90,13 @@ class IngestNewJsonFile:
                 .withColumn(CDMSConstants.job_id_col, lit(job_id))\
                 .withColumn(CDMSConstants.provider_col, lit(provider))\
                 .withColumn(CDMSConstants.project_col, lit(project))\
-                .withColumn(CDMSConstants.site_col, lit(site))\
+                .withColumn(CDMSConstants.platform_id_col, df[CDMSConstants.platform_col][CDMSConstants.id_col])\
                 .repartition(1)  # combine to 1 data frame to increase size
             LOGGER.debug(f'create writer')
             all_partitions = [
                 CDMSConstants.provider_col, 
                 CDMSConstants.project_col,
-                CDMSConstants.site_col,
+                CDMSConstants.platform_id_col,
                 CDMSConstants.year_col, 
                 CDMSConstants.month_col, 
                 CDMSConstants.job_id_col]
@@ -135,8 +134,7 @@ class IngestNewJsonFile:
             input_json[CDMSConstants.observations_key],
             job_id,
             input_json[CDMSConstants.provider_col],
-            input_json[CDMSConstants.project_col],
-            input_json[CDMSConstants.site_col])
+            input_json[CDMSConstants.project_col])
         df_writer.mode(self.__mode).parquet(self.__parquet_name, compression='GZIP')  # snappy GZIP
         LOGGER.debug(f'finished writing parquet')
         return len(input_json[CDMSConstants.observations_key])

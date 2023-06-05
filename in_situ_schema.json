@@ -11,11 +11,6 @@
             "description": "",
             "type": "string"
         },
-        "site": {
-            "description": "The site where this datapoint was extracted",
-            "uri": "",
-            "type": "string"
-        },
         "observations": {
             "type": "array",
             "items": {
@@ -25,11 +20,444 @@
         }
     },
     "definitions": {
+        "platform": {
+            "description": "",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "code": {
+                    "description": "Optional platform identifier is provided by the Natural Environment Research Council (NERC) Vocabulary Server developed and maintained by the British Oceanographic Data Centre and can be found at http://vocab.nerc.ac.uk/collection/L06/current/",
+                    "type": "string",
+                    "oneOf": [
+                        {
+                            "const": "9A",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/9A/",
+                            "title": "DUKW"
+                        },
+                        {
+                            "const": "4A",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/4A/",
+                            "title": "Ice-tethered subsurface profiling float"
+                        },
+                        {
+                            "const": "62",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/62/",
+                            "title": "aeroplane"
+                        },
+                        {
+                            "const": "54",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/54/",
+                            "title": "airship"
+                        },
+                        {
+                            "const": "96",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/96/",
+                            "title": "amphibious crawler"
+                        },
+                        {
+                            "const": "95",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/95/",
+                            "title": "amphibious vehicle"
+                        },
+                        {
+                            "const": "69",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/69/",
+                            "title": "autogyro"
+                        },
+                        {
+                            "const": "3B",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/3B/",
+                            "title": "autonomous surface water vehicle"
+                        },
+                        {
+                            "const": "25",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/25/",
+                            "title": "autonomous underwater vehicle"
+                        },
+                        {
+                            "const": "13",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/13/",
+                            "title": "beach/intertidal zone structure"
+                        },
+                        {
+                            "const": "50",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/50/",
+                            "title": "buoyant aircraft"
+                        },
+                        {
+                            "const": "75",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/75/",
+                            "title": "cetacean"
+                        },
+                        {
+                            "const": "17",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/17/",
+                            "title": "coastal structure"
+                        },
+                        {
+                            "const": "90",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/90/",
+                            "title": "cryosphere"
+                        },
+                        {
+                            "const": "72",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/72/",
+                            "title": "diver"
+                        },
+                        {
+                            "const": "94",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/94/",
+                            "title": "drift ice"
+                        },
+                        {
+                            "const": "24",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/24/",
+                            "title": "drifting manned submersible"
+                        },
+                        {
+                            "const": "44",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/44/",
+                            "title": "drifting subsurface float"
+                        },
+                        {
+                            "const": "46",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/46/",
+                            "title": "drifting subsurface profiling float"
+                        },
+                        {
+                            "const": "42",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/42/",
+                            "title": "drifting surface float"
+                        },
+                        {
+                            "const": "3D",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/3D/",
+                            "title": "drillship"
+                        },
+                        {
+                            "const": "76",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/76/",
+                            "title": "fish"
+                        },
+                        {
+                            "const": "36",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/36/",
+                            "title": "fishing vessel"
+                        },
+                        {
+                            "const": "11",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/11/",
+                            "title": "fixed benthic node"
+                        },
+                        {
+                            "const": "45",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/45/",
+                            "title": "fixed subsurface vertical profiler"
+                        },
+                        {
+                            "const": "73",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/73/",
+                            "title": "flightless bird"
+                        },
+                        {
+                            "const": "47",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/47/",
+                            "title": "float"
+                        },
+                        {
+                            "const": "52",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/52/",
+                            "title": "free-floating balloon"
+                        },
+                        {
+                            "const": "51",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/51/",
+                            "title": "free-rising balloon"
+                        },
+                        {
+                            "const": "64",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/64/",
+                            "title": "geostationary orbiting satellite"
+                        },
+                        {
+                            "const": "6A",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/6A/",
+                            "title": "glider"
+                        },
+                        {
+                            "const": "67",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/67/",
+                            "title": "helicopter"
+                        },
+                        {
+                            "const": "9B",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/9B/",
+                            "title": "hovercraft"
+                        },
+                        {
+                            "const": "71",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/71/",
+                            "title": "human"
+                        },
+                        {
+                            "const": "91",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/91/",
+                            "title": "ice island"
+                        },
+                        {
+                            "const": "92",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/92/",
+                            "title": "ice shelf"
+                        },
+                        {
+                            "const": "6B",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/6B/",
+                            "title": "kite"
+                        },
+                        {
+                            "const": "10",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/10/",
+                            "title": "land or seafloor"
+                        },
+                        {
+                            "const": "77",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/77/",
+                            "title": "land-sea mammals"
+                        },
+                        {
+                            "const": "14",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/14/",
+                            "title": "land/onshore structure"
+                        },
+                        {
+                            "const": "15",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/15/",
+                            "title": "land/onshore vehicle"
+                        },
+                        {
+                            "const": "26",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/26/",
+                            "title": "lowered unmanned submersible"
+                        },
+                        {
+                            "const": "38",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/38/",
+                            "title": "man-powered boat"
+                        },
+                        {
+                            "const": "3A",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/3A/",
+                            "title": "man-powered small boat"
+                        },
+                        {
+                            "const": "66",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/66/",
+                            "title": "manned spacecraft"
+                        },
+                        {
+                            "const": "19",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/19/",
+                            "title": "mesocosm bag"
+                        },
+                        {
+                            "const": "41",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/41/",
+                            "title": "moored surface buoy"
+                        },
+                        {
+                            "const": "48",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/48/",
+                            "title": "mooring"
+                        },
+                        {
+                            "const": "39",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/39/",
+                            "title": "naval vessel"
+                        },
+                        {
+                            "const": "60",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/60/",
+                            "title": "non-buoyant aircraft"
+                        },
+                        {
+                            "const": "16",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/16/",
+                            "title": "offshore structure"
+                        },
+                        {
+                            "const": "65",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/65/",
+                            "title": "orbiting satellite"
+                        },
+                        {
+                            "const": "70",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/70/",
+                            "title": "organism"
+                        },
+                        {
+                            "const": "93",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/93/",
+                            "title": "pack ice"
+                        },
+                        {
+                            "const": "6C",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/6C/",
+                            "title": "parachute"
+                        },
+                        {
+                            "const": "21",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/21/",
+                            "title": "propelled manned submersible"
+                        },
+                        {
+                            "const": "22",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/22/",
+                            "title": "propelled unmanned submersible"
+                        },
+                        {
+                            "const": "61",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/61/",
+                            "title": "research aeroplane"
+                        },
+                        {
+                            "const": "31",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/31/",
+                            "title": "research vessel"
+                        },
+                        {
+                            "const": "18",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/18/",
+                            "title": "river station"
+                        },
+                        {
+                            "const": "63",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/63/",
+                            "title": "rocket"
+                        },
+                        {
+                            "const": "68",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/68/",
+                            "title": "satellite"
+                        },
+                        {
+                            "const": "12",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/12/",
+                            "title": "sea bed vehicle"
+                        },
+                        {
+                            "const": "74",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/74/",
+                            "title": "seabird and duck"
+                        },
+                        {
+                            "const": "37",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/37/",
+                            "title": "self-propelled boat"
+                        },
+                        {
+                            "const": "33",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/33/",
+                            "title": "self-propelled small boat"
+                        },
+                        {
+                            "const": "30",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/30/",
+                            "title": "ship"
+                        },
+                        {
+                            "const": "6Z",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/6Z/",
+                            "title": "spacecraft"
+                        },
+                        {
+                            "const": "27",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/27/",
+                            "title": "sub-surface gliders"
+                        },
+                        {
+                            "const": "20",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/20/",
+                            "title": "submersible"
+                        },
+                        {
+                            "const": "43",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/43/",
+                            "title": "subsurface mooring"
+                        },
+                        {
+                            "const": "3C",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/3C/",
+                            "title": "surface gliders"
+                        },
+                        {
+                            "const": "49",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/49/",
+                            "title": "surface ice buoy"
+                        },
+                        {
+                            "const": "3Z",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/3Z/",
+                            "title": "surface vessel"
+                        },
+                        {
+                            "const": "53",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/53/",
+                            "title": "tethered balloon"
+                        },
+                        {
+                            "const": "23",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/23/",
+                            "title": "towed unmanned submersible"
+                        },
+                        {
+                            "const": "0",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/0/",
+                            "title": "unknown"
+                        },
+                        {
+                            "const": "6D",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/6D/",
+                            "title": "unmanned aerial vehicle"
+                        },
+                        {
+                            "const": "34",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/34/",
+                            "title": "vessel at fixed position"
+                        },
+                        {
+                            "const": "32",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/32/",
+                            "title": "vessel of opportunity"
+                        },
+                        {
+                            "const": "35",
+                            "uri": "http://vocab.nerc.ac.uk/collection/L06/current/35/",
+                            "title": "vessel of opportunity on fixed route"
+                        }
+                    ]
+                },
+                "id": {
+                    "description": "Platform identifier",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Optional platform type",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
         "observation": {
             "description": "Description for each variable is copied from CF standard names table found at https://cfconventions.org/Data/cf-standard-names/77/build/cf-standard-name-table.html",
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "platform": {
+                    "description": "",
+                    "$ref": "#/definitions/platform"
+                },
                 "time": {
                     "description": "Time of the observation",
                     "uri": "http://vocab.nerc.ac.uk/collection/P07/current/CFSN0115/",

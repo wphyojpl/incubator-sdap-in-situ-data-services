@@ -115,7 +115,7 @@ class ParquetPathsEsRetriever:
             },
             'sort': [
                 {'min_datetime': {'order': 'asc'}},
-                {CDMSConstants.site_col: {'order': 'asc'}},
+                {CDMSConstants.platform_id_col: {'order': 'asc'}},
                 {'min_lat': {'order': 'asc'}},
                 {'min_lon': {'order': 'asc'}},
                 {'s3_url': {'order': 'asc'}},
