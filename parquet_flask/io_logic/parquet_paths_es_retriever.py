@@ -15,6 +15,7 @@
 
 import logging
 from collections import defaultdict
+from typing import List
 
 from parquet_flask.aws.es_factory import ESFactory
 
@@ -28,7 +29,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class ParquetPathsEsRetriever:
-    def __init__(self, base_path: str, props=QueryProps()):
+    def __init__(self, base_path: str, props: QueryProps = QueryProps()):
         self.__base_path = base_path
         self.__props = props
         self.__es: ESAbstract = None
@@ -41,7 +42,7 @@ class ParquetPathsEsRetriever:
         self.__es: ESAbstract = ESFactory().get_instance('AWS', index=es_index, base_url=es_url, port=es_port)
         return self
 
-    def __step_1(self, es_results: [PartitionedParquetPath]):
+    def __step_1(self, es_results: List[PartitionedParquetPath]):
         base_map = defaultdict(list)
         for each in es_results:
             each: PartitionedParquetPath = each
@@ -85,17 +86,17 @@ class ParquetPathsEsRetriever:
             es_terms.append({'term': {CDMSConstants.provider_col: self.__props.provider}})
         if self.__props.project is not None:
             es_terms.append({'term': {CDMSConstants.project_col: self.__props.project}})
-        if self.__props.platform_code is not None:
-            if isinstance(self.__props.platform_code, list):
+        if self.__props.platform_id is not None:
+            if isinstance(self.__props.platform_id, list):
                 es_terms.append({
                     'bool': {
                         'should': [
-                            {'term': {CDMSConstants.platform_code_col: k}} for k in self.__props.platform_code
+                            {'term': {CDMSConstants.platform_id_col: k}} for k in self.__props.platform_id
                         ]
                     }
                 })
             else:
-                es_terms.append({'term': {CDMSConstants.platform_code_col: self.__props.platform_code}})
+                es_terms.append({'term': {CDMSConstants.platform_id_col: self.__props.platform_id}})
         if self.__props.min_datetime is not None:
             es_terms.append({'range': {'max_datetime': {'gte': TimeUtils.get_datetime_obj(self.__props.min_datetime).timestamp()}}})
         if self.__props.max_datetime is not None:
