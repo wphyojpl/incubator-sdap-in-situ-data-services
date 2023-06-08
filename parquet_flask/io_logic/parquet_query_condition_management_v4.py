@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import logging
+from typing import List
 
 from parquet_flask.io_logic.parquet_paths_es_retriever import ParquetPathsEsRetriever
 from parquet_flask.io_logic.partitioned_parquet_path import PartitionedParquetPath
@@ -30,7 +31,7 @@ class ParquetQueryConditionManagementV4:
         self.__columns = [CDMSConstants.time_col, CDMSConstants.depth_col, CDMSConstants.lat_col, CDMSConstants.lon_col]
         self.__query_props = props
         self.__missing_depth_value = missing_depth_value
-        self.__parquet_names: [PartitionedParquetPath] = []
+        self.__parquet_names: List[PartitionedParquetPath] = []
         self.__es_config = es_config
 
     def stringify_parquet_names(self):
@@ -134,6 +135,27 @@ class ParquetQueryConditionManagementV4:
             self.__conditions.append(f"{CDMSConstants.lat_col} <= {self.__query_props.max_lat_lon[0]}")
             self.__conditions.append(f"{CDMSConstants.lon_col} <= {self.__query_props.max_lat_lon[1]}")
         return
+    
+    def __check_platform_id(self):
+        '''
+        Check whether the platform_id is in self.__query_props. If yes, add query condition to self.__conditions.
+        :return: None
+        '''
+        if self.__query_props.platform_id is None:
+            return
+
+        platform_id_condition = []
+        if isinstance(self.__query_props.platform_id, list):
+            for each_platform_id in self.__query_props.platform_id:
+                platform_id_condition.append(
+                    f"{CDMSConstants.platform_id_col} = {each_platform_id}"
+                )
+        else:
+            platform_id_condition.append(
+                f"{CDMSConstants.parameter_id_col} = {self.__query_props.parameter_id}"
+            )
+        
+        self.__conditions.append(f"({' OR '.join(platform_id_condition)})")
 
     def __check_depth(self):
         if self.__query_props.min_depth is None and self.__query_props.max_depth is None:
@@ -181,7 +203,8 @@ class ParquetQueryConditionManagementV4:
     def manage_query_props(self):
         self.__check_bbox()
         self.__check_time_range()
-        self.__check_depth()
+        self.__check_platform_id()
+        #self.__check_depth()  # TODO: check depth
         self.__add_variables_filter()
         self.__check_columns()
         es_retriever = ParquetPathsEsRetriever(self.__parquet_name, self.__query_props).load_es_from_config(self.__es_config['es_url'], self.__es_config['es_index'], self.__es_config.get('es_port', 443))

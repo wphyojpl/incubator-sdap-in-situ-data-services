@@ -154,8 +154,8 @@ class IngestParquet(Resource):
             query_json['min_lat_lon'] = [bounding_box[1], bounding_box[0]]
             query_json['max_lat_lon'] = [bounding_box[3], bounding_box[2]]
         if 'platform' in request.args:
-            query_json['platform_code'] = [k.strip() for k in request.args.get('platform').strip().split(',')]
-            query_json['platform_code'].sort()
+            query_json['platform_id'] = [k.strip() for k in request.args.get('platform').strip().split(',')]
+            query_json['platform_id'].sort()
         if 'provider' in request.args:
             query_json['provider'] = request.args.get('provider')
         if 'project' in request.args:
