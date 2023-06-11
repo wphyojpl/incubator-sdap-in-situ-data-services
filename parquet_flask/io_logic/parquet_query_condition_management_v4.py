@@ -148,11 +148,11 @@ class ParquetQueryConditionManagementV4:
         if isinstance(self.__query_props.platform_id, list):
             for each_platform_id in self.__query_props.platform_id:
                 platform_id_condition.append(
-                    f"{CDMSConstants.platform_id_col} = {each_platform_id}"
+                    f"{CDMSConstants.platform_id_col} = '{each_platform_id}'"
                 )
         else:
             platform_id_condition.append(
-                f"{CDMSConstants.parameter_id_col} = {self.__query_props.parameter_id}"
+                f"{CDMSConstants.parameter_id_col} = '{self.__query_props.parameter_id}'"
             )
         
         self.__conditions.append(f"({' OR '.join(platform_id_condition)})")

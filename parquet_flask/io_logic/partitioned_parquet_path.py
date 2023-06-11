@@ -57,8 +57,8 @@ class PartitionedParquetPath:
             self.set_provider(es_result[CDMSConstants.provider_col])
         if CDMSConstants.project_col in es_result:
             self.set_project(es_result[CDMSConstants.project_col])
-        if CDMSConstants.platform_code_col in es_result:
-            self.set_platform(es_result[CDMSConstants.platform_code_col])
+        if CDMSConstants.platform_id_col in es_result:
+            self.set_platform(es_result[CDMSConstants.platform_id_col])
         if CDMSConstants.year_col in es_result:
             self.set_year(es_result[CDMSConstants.year_col])
         if CDMSConstants.month_col in es_result:
@@ -77,7 +77,7 @@ class PartitionedParquetPath:
         if self.project is not None:
             column_set[CDMSConstants.project_col] = self.project
         if self.platform is not None:
-            column_set[CDMSConstants.platform_code_col] = self.platform
+            column_set[CDMSConstants.platform_id_col] = self.platform
         return column_set
 
     @property
@@ -180,7 +180,7 @@ class PartitionedParquetPath:
         parquet_path = f'{parquet_path}/{CDMSConstants.project_col}={self.project}'
         if self.platform is None:
             return parquet_path
-        parquet_path = f'{parquet_path}/{CDMSConstants.platform_code_col}={self.platform}'
+        parquet_path = f'{parquet_path}/{CDMSConstants.platform_id_col}={self.platform}'
         if self.lat_lon is None:
             return parquet_path
         parquet_path = f'{parquet_path}/{CDMSConstants.geo_spatial_interval_col}={self.__format_lat_lon()}'

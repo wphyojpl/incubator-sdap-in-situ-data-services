@@ -159,11 +159,13 @@ class QueryV4:
         return int(query_result.count())
 
     def search(self, spark_session=None):
+        # Search for parquent files and generate spark query conditions
         LOGGER.debug(f'<delay_check> query_v4_search started')
         condition_manager = ParquetQueryConditionManagementV4(self.__parquet_name, self.__missing_depth_value, self.__es_config, self.__props)
         condition_manager.manage_query_props()
-
         conditions = ' AND '.join(condition_manager.conditions)
+
+        # Get the parquet files into spark dataframe
         query_begin_time = datetime.now()
         LOGGER.debug(f'<delay_check> query begins at {query_begin_time}')
         spark = self.__retrieve_spark() if spark_session is None else spark_session
@@ -178,6 +180,8 @@ class QueryV4:
             }
         read_df_time = datetime.now()
         LOGGER.debug(f'<delay_check> parquet read created at {read_df_time}. duration: {read_df_time - created_spark_session_time}')
+
+        # Filter the spark dataframe and sort it
         query_result = read_df.where(conditions)
         query_result = query_result.sort(self.__get_sorting_params(query_result))
         query_time = datetime.now()
