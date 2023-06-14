@@ -440,6 +440,10 @@
                     "description": "Platform identifier",
                     "type": "string"
                 },
+                "short_name": {
+                    "description": "Short name for the platform",
+                    "type": "string"
+                },
                 "type": {
                     "description": "Optional platform type",
                     "type": "string"
