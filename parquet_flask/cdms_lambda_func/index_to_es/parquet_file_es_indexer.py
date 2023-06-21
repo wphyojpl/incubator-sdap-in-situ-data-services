@@ -59,9 +59,9 @@ class ParquetFileEsIndexer:
     def ingest_file(self):
         if self.__s3_url is None:
             raise ValueError('s3 url is null. Set it first')
-        s3_stat = S3StatExtractor(self.__s3_url).start()
+        s3_stat = S3StatExtractor(self.__s3_url).start() # Parquet common data fields (e.g. provider, project, platform_id, etc.)
         LOGGER.debug(f's3_stat: {s3_stat.to_json()}')
-        parquet_stat = self.extract_stats_locally()
+        parquet_stat = self.extract_stats_locally()      # Parquet statistics (e.g. min, max, mean, etc.)
         LOGGER.debug(f'parquet_stat: {parquet_stat}')
         self.__es.index_one({'s3_url': self.__s3_url, **s3_stat.to_json(), **parquet_stat}, s3_stat.s3_url)
         return

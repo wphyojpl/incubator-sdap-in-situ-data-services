@@ -20,6 +20,9 @@
       "platform_id": {
         "type": "keyword"
       },
+      "platform_short_name": {
+        "type": "keyword"
+      },
       "project": {
         "type": "keyword"
       },

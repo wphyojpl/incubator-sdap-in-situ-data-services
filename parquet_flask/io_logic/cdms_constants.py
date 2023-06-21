@@ -25,6 +25,8 @@ class CDMSConstants:
     id_col = 'id'
     platform_col = 'platform'
     code_col = 'code'
+    platform_short_name = 'platform.short_name'
+    platform_short_name_col = 'platform_short_name'
 
 
     job_id_col = 'job_id'
@@ -66,6 +68,5 @@ class CDMSConstants:
     max_lon = 'max_lon'
     min_lon = 'min_lon'
     
-    platform_short_name = 'platform.short_name'
 
     geospatial_interval_by_platform = 'geospatial_interval_by_platform'

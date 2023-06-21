@@ -169,6 +169,7 @@ class StatisticsRetriever:
         """
         return {
             'total': self.total,
+            'platform_short_name': self.platform_short_name,
             'min_datetime': self.min_datetime,
             'max_datetime': self.max_datetime,
             'min_lat': self.min_lat,
@@ -180,6 +181,7 @@ class StatisticsRetriever:
 
     def start(self):
         stats = self.__input_dataset.select(
+            pyspark_functions.min(CDMSConstants.platform_short_name),
             pyspark_functions.min(CDMSConstants.lat_col),
             pyspark_functions.max(CDMSConstants.lat_col),
             pyspark_functions.min(CDMSConstants.lon_col),
@@ -191,6 +193,9 @@ class StatisticsRetriever:
             raise ValueError(f'invalid row count on stats function: {stats}')
 
         stats = stats[0].asDict()
+
+        self.platform_short_name = stats[f'min({CDMSConstants.platform_short_name})']
+
         self.min_lat = stats[f'min({CDMSConstants.lat_col})']
         self.max_lat = stats[f'max({CDMSConstants.lat_col})']
 

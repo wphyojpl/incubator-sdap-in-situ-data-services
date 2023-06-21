@@ -92,7 +92,7 @@ class SubCollectionStatistics:
         """
         core_stats = {
             "platform": core_stats['key'],
-            "platform_short_name": core_stats['platform_short_name']['value'],
+            "platform_short_name": core_stats['platform_short_name']['buckets'][0]['key'],
             "total": core_stats['totals']['value'],
             "lat": core_stats['max_lat']['value'],
             "lon": core_stats['max_lon']['value'],
@@ -265,8 +265,9 @@ class SubCollectionStatistics:
                 }
             },
             "platform_short_name": {
-                "min": {
-                    "field": CDMSConstants.platform_short_name
+                "terms": {
+                    "field": CDMSConstants.platform_short_name_col,
+                    "size": 1
                 }
             }
         }
@@ -281,15 +282,20 @@ class SubCollectionStatistics:
             "aggs": {
                 "by_provider": {
                     "terms": {
-                        "field": CDMSConstants.provider_col
+                        "field": CDMSConstants.provider_col,
+                        "size": 100
                     },
                     "aggs": {
                         "by_project": {
-                            "terms": {"field": CDMSConstants.project_col},
+                            "terms": {
+                                "field": CDMSConstants.project_col,
+                                "size": 100
+                            },
                             "aggs": {
                                 "by_platform_id": {
                                     "terms": {
-                                        "field": CDMSConstants.platform_id_col
+                                        "field": CDMSConstants.platform_id_col,
+                                        "size": 10000
                                     },
                                     "aggs": {
                                         **normal_agg_stmts,
