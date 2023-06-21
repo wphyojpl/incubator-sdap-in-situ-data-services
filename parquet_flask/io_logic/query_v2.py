@@ -38,9 +38,9 @@ QUERY_PROPS_SCHEMA = {
             'minItems': 0,
         },
         'platform_id': {'type': 'array', 'items': {'type': 'string'}, 'minItems': 1},
-        'provider': {'type': 'string'},
+        'provider': {'type': 'array', 'items': {'type': 'string'}, 'minItems': 1},
         'marker_platform_code': {'type': 'string'},
-        'project': {'type': 'string'},
+        'project': {'type': 'array', 'items': {'type': 'string'}, 'minItems': 1},
         'min_time': {'type': 'string'},
         'max_time': {'type': 'string'},
         'min_lat_lon': {'type': 'array', 'items': {'type': 'number'}, 'minItems': 2, 'maxItems': 2},
@@ -133,7 +133,7 @@ class QueryProps:
         if 'provider' in input_json:
             self.provider = input_json['provider']
         if 'device' in input_json:
-            self.provider = input_json['device']
+            self.device = input_json['device']
         if 'platform_id' in input_json:
             self.platform_id = input_json['platform_id']
         if 'columns' in input_json:
