@@ -572,6 +572,12 @@
                     "uri": "",
                     "description": "Lake or reservoir water surface elevation above NAVD 1988, feet"
                 },
+                "RelativeHumidity": {
+                    "type": "number",
+                    "units": "%",
+                    "uri": "",
+                    "description": "RelativeHumidity, water, percent"
+                },
                 "Temperature": {
                     "type": "number",
                     "units": "deg C",
@@ -621,6 +627,10 @@
                     "type": "string"
                 },
                 "Lake_or_reservoir_water_surface_elevation_above_NAVD_1988_quality": {
+                    "description": "quality",
+                    "type": "string"
+                },
+                "RelativeHumidity_quality": {
                     "description": "quality",
                     "type": "string"
                 },
