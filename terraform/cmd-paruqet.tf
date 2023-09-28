@@ -36,4 +36,12 @@ module "cdms-parquet" {
   subnet_public_2 = var.subnet_public_2
   volume_size = var.volume_size
   vpc = var.vpc
+  cdms_domain = ""
+  cdms_token = ""
+  insitu_bucket = ""
+  insitu_bucket_staging = ""
+  insitu_lambda_vpc_id = ""
+  lambda_processing_role_arn = ""
+  metadata_tbl = ""
+  prefix = ""
 }

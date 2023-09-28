@@ -28,7 +28,7 @@ from setuptools import find_packages, setup
 # ]
 
 install_requires = [
-    'pandas',
+    'pandas===1.5.0rc0',
     'pyspark===3.1.2',
     # 'fastparquet===0.5.0',  # not using it. sticking to pyspark with spark cluster according to Nga
     'findspark===1.4.2',

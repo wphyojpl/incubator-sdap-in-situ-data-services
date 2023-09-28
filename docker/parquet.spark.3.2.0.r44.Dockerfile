@@ -19,9 +19,11 @@ USER root
 RUN apt-get update -y && apt-get install vim -y
 RUN mkdir /usr/app
 WORKDIR /usr/app
+COPY requirements.txt /usr/app
 
-COPY setup.py /usr/app
-RUN python3 /usr/app/setup.py install
+RUN ["python", "-m", "pip", "install", "-r", "requirements.txt"]
+#COPY setup.py /usr/app
+RUN #python3 /usr/app/setup.py install
 ENV PYTHONPATH="${PYTHONPATH}:/usr/app/"
 
 RUN echo '{"auth_cred":"Mock-CDMS-Flask-Token"}' > /usr/app/cdms_flask_auth.json

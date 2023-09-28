@@ -4,7 +4,7 @@ From this directory: `/parquet_test_1/k8s_spark/parquet.spark.helm`
 - Update values in `values.yaml` to match your environment (dynamodb table name, s3 bucket name, etc.)
 - Run this to install the parquet spark
 
-        helm install parquet-t1 . -n bitnami-spark --dependency-update
+        helm install parquet-t1 . -n nexus-ops --dependency-update
 
 - Port forward the `service` to access it from outside
 
@@ -16,4 +16,4 @@ From this directory: `/parquet_test_1/k8s_spark/parquet.spark.helm`
 
 - Run this to uninstall the parquet spark
 
-        helm uninstall parquet-t1 -n bitnami-spark
+        helm uninstall parquet-t1 -n nexus-ops

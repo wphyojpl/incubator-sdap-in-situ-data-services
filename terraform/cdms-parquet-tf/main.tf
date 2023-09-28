@@ -16,16 +16,26 @@ limitations under the License.
 */
 
 provider "aws" {
-  region = var.region
-  shared_credentials_file = var.shared_credentials_file
-  profile = var.profile
+  region = var.aws_region
 }
 
 data "aws_caller_identity" "current" {}
 
 locals {
-  environment = var.environment
-  # Account ID used for getting the ECR host
-  account_id = data.aws_caller_identity.current.account_id
   resource_prefix = "${var.project}-${var.environment}"
+  account_id = data.aws_caller_identity.current.account_id
+  lambda_file_name = "${path.module}/build/cdms_lambda_functions.zip"
+  security_group_ids_set = var.security_group_ids != null
+}
+
+resource "aws_security_group" "insitu_lambda_sg" {
+  count  = local.security_group_ids_set ? 0 : 1
+  vpc_id = var.insitu_lambda_vpc_id
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = var.tags
 }
