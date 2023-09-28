@@ -47,25 +47,29 @@ class DownloadRawData:
         end_date = np.datetime64(end_date)
         dates = np.arange(start_date, end_date)
         for date in dates:
+            scoordinate_data = self.download_coordinate(date)
             for i in range(24):
                 hourly_data = self.download_one_file(i, date)
+                hourly_data = hourly_data.merge(scoordinate_data, on='site_id', how='left')
                 filename = f'{str(date)}_{str(i).rjust(2, "0")}.csv'
                 hourly_data.to_csv(f'{self.__download_dir}/{filename}', index=False)
         return
 
     def download_coordinate(self, current_date: str):
         date_str = str(current_date).replace('-', '')
+        date_time_str = f'{current_date}T00:00:00Z'
         coordiniate_url = f'{self.base_url}/{date_str[:4]}/{date_str}/monitoring_site_locations.dat'
         try:
             coordinate_data = pd.read_csv(coordiniate_url, sep='|', encoding='latin1', header=None)
             coordinate_data = coordinate_data[[0, 8, 9]]
             coordinate_data.columns = ['site_id', 'lat', 'lon']
-            filename = f'{date_str}_coordinates.csv'
-            coordinate_data.to_csv(f'{self.__download_dir}/{filename}', index=False)
+            # coordinate_data['time'] = date_time_str
+            # filename = f'{date_str}_coordinates.csv'
+            # coordinate_data.to_csv(f'{self.__download_dir}/{filename}', index=False)
         except Exception as e:
             print(f'Error getting data for {coordiniate_url}. {e}')
             raise e
-        return
+        return coordinate_data
 
     def download_coordinates(self, start_date: str, end_date: str):
         start_date = np.datetime64(start_date)
