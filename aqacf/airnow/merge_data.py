@@ -23,6 +23,7 @@ class MergeData:
         data_columns.remove('site_id')
         data_columns.remove('time')
         result_df = concat_data_frame.groupby(['site_id', concat_data_frame['time'].dt.date])[list(data_columns)].mean().reset_index()
+        result_df['time'] = result_df['time'].astype('datetime64').dt.strftime('%Y-%m-%dT%H:%M:%SZ')
         result_df.to_csv(os.path.join(self.__merged_data_dir, 'daily.csv'), index=False)
         return
 
