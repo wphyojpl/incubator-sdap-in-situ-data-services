@@ -1,6 +1,11 @@
+from datetime import datetime
+
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
+
+from parquet_flask.utils.file_utils import FileUtils
+
 
 # 'https://files.airnowtech.org/?prefix=airnow/'
 class DownloadRawData:
@@ -43,6 +48,7 @@ class DownloadRawData:
         return hourly_data
 
     def download_data(self, start_date: str, end_date: str):
+        FileUtils.mk_dir_p(self.__download_dir)
         start_date = np.datetime64(start_date)
         end_date = np.datetime64(end_date)
         dates = np.arange(start_date, end_date)
@@ -80,4 +86,8 @@ class DownloadRawData:
         return
 
 # DownloadRawData().download_coordinates('2021-06-01', '2021-06-05')
-DownloadRawData().download_data('2021-06-01', '2021-06-05')
+time1 = datetime.now()
+# DownloadRawData('/tmp/airnow2').download_data('2022-06-01', '2022-07-01')
+time2 = datetime.now()
+print(time2 - time1)
+# 0:12:32.948494
