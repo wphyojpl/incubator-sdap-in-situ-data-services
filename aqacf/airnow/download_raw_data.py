@@ -67,8 +67,8 @@ class DownloadRawData:
         coordiniate_url = f'{self.base_url}/{date_str[:4]}/{date_str}/monitoring_site_locations.dat'
         try:
             coordinate_data = pd.read_csv(coordiniate_url, sep='|', encoding='latin1', header=None)
-            coordinate_data = coordinate_data[[0, 8, 9]]
-            coordinate_data.columns = ['site_id', 'lat', 'lon']
+            coordinate_data = coordinate_data[[0, 3, 8, 9]]
+            coordinate_data.columns = ['site_id', 'site_name', 'lat', 'lon']
             # coordinate_data['time'] = date_time_str
             # filename = f'{date_str}_coordinates.csv'
             # coordinate_data.to_csv(f'{self.__download_dir}/{filename}', index=False)
@@ -87,7 +87,7 @@ class DownloadRawData:
 
 # DownloadRawData().download_coordinates('2021-06-01', '2021-06-05')
 time1 = datetime.now()
-# DownloadRawData('/tmp/airnow2').download_data('2022-06-01', '2022-07-01')
+# DownloadRawData('/tmp/airnow3').download_data('2022-07-01', '2022-08-01')
 time2 = datetime.now()
 print(time2 - time1)
 # 0:12:32.948494
