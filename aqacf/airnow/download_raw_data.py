@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 import numpy as np
@@ -5,6 +6,7 @@ import pandas as pd
 from pandas import DataFrame
 
 from parquet_flask.utils.file_utils import FileUtils
+LOGGER = logging.getLogger(__name__)
 
 
 # 'https://files.airnowtech.org/?prefix=airnow/'
@@ -53,12 +55,17 @@ class DownloadRawData:
         end_date = np.datetime64(end_date)
         dates = np.arange(start_date, end_date)
         for date in dates:
+            LOGGER.debug(f'downloading coordinate for {date}')
             scoordinate_data = self.download_coordinate(date)
             for i in range(24):
+                LOGGER.debug(f'downloading data for {date} - {i}')
                 hourly_data = self.download_one_file(i, date)
+                LOGGER.debug(f'merging data for {date} - {i}')
                 hourly_data = hourly_data.merge(scoordinate_data, on='site_id', how='left')
                 filename = f'{str(date)}_{str(i).rjust(2, "0")}.csv'
+                LOGGER.debug(f'writing data for {date} - {i}')
                 hourly_data.to_csv(f'{self.__download_dir}/{filename}', index=False)
+            LOGGER.debug(f'done for {date} - {i}')
         return
 
     def download_coordinate(self, current_date: str):
@@ -86,8 +93,8 @@ class DownloadRawData:
         return
 
 # DownloadRawData().download_coordinates('2021-06-01', '2021-06-05')
-time1 = datetime.now()
-# DownloadRawData('/tmp/airnow3').download_data('2022-07-01', '2022-08-01')
-time2 = datetime.now()
-print(time2 - time1)
+# time1 = datetime.now()
+# # DownloadRawData('/tmp/airnow3').download_data('2022-07-01', '2022-08-01')
+# time2 = datetime.now()
+# print(time2 - time1)
 # 0:12:32.948494

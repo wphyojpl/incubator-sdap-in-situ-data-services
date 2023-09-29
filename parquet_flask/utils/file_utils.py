@@ -80,11 +80,36 @@ class FileUtils:
                 return None
 
     @staticmethod
+    def gzip_file_unix_os(file_path, output_file_path=None, overwrite=False):
+        if not FileUtils.file_exist(file_path):
+            raise ValueError(f'missing file: {file_path}')
+        default_output_path = f'{file_path}.gz'
+        if output_file_path is None:
+            output_file_path = default_output_path
+        if FileUtils.file_exist(output_file_path) and overwrite is False:
+            raise ValueError(f'zipped file already exists: {output_file_path} and overwrite is set to False')
+        session = Popen(['gzip', '-9', file_path], stdout=PIPE, stderr=PIPE)
+        stdout, stderr = session.communicate()
+        if stderr:
+            raise RuntimeError(
+                'error while gunzipping the file with Popen. filename: {}. error: {}'.format(file_path, stderr))
+        if not FileUtils.file_exist(default_output_path):
+            raise ValueError('missing gzipped file: {}'.format(default_output_path))
+        if default_output_path != output_file_path:
+            os.renames(default_output_path, output_file_path)
+        return output_file_path
+
+    @staticmethod
+    def remove_if_exists(file_path):
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            os.remove(file_path)
+        return
+
+    @staticmethod
     def write_json(file_path, json_obj, overwrite=False, append=False, prettify=False):
         if os.path.exists(file_path) and not overwrite:
             raise ValueError('{} already exists, and not overwriting'.format(file_path))
         with open(file_path, 'a' if append else 'w') as ff:
             json_str = json.dumps(json_obj, indent=4) if prettify else json.dumps(json_obj)
             ff.write(json_str)
-            pass
         return

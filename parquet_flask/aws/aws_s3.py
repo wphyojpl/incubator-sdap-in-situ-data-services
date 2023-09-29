@@ -16,6 +16,7 @@
 import logging
 import os
 from io import BytesIO
+from typing import Union
 
 from parquet_flask.aws.aws_cred import AwsCred
 from parquet_flask.utils.file_utils import FileUtils
@@ -30,6 +31,59 @@ class AwsS3(AwsCred):
         self.__s3_client = self.get_client('s3')
         self.__target_bucket = None
         self.__target_key = None
+
+    def __upload_to_s3(self, bucket, prefix, file_path, delete_files=False, add_size=True, other_tags={}, s3_name=None):
+        """
+        Uploading a file to S3
+
+        :param bucket: string - name of bucket
+        :param prefix: string - prefix. don't start and end with `/` to avoid extra unnamed dirs
+        :param file_path: string - absolute path of file location
+        :param delete_files: boolean - deleting original file. default: False
+        :param add_size: boolean - adding the file size as tag. default: True
+        :param other_tags: dict - key-value pairs as a dictionary
+        :param s3_name: string - name of s3 file if the user wishes to change.
+                    using the actual filename if not provided. defaulted to None
+        :return: None
+        """
+        tags = {
+            'TagSet': []
+        }
+        adding_tags = False
+        if add_size is True:
+            adding_tags = True
+            tags['TagSet'].append({
+                'Key': 'org_size',
+                'Value': str(FileUtils.get_size(file_path))
+            })
+        for key, val in other_tags.items():
+            tags['TagSet'].append({
+                'Key': key,
+                'Value': str(val)
+            })
+        if s3_name is None:
+            s3_name = os.path.basename(file_path)
+        s3_key = '{}/{}'.format(prefix, s3_name)
+        self.__s3_client.upload_file(file_path, bucket, s3_key, ExtraArgs={'ServerSideEncryption': 'AES256'})
+        if delete_files is True:  # deleting local files
+            FileUtils.remove_if_exists(file_path)
+        if adding_tags is True:
+            try:
+                self.__s3_client.put_object_tagging(Bucket=bucket, Key=s3_key, Tagging=tags)
+            except Exception as e:
+                LOGGER.exception(f'error while adding tags: {tags} to {bucket}/{s3_key}')
+                raise e
+        return s3_key
+
+    def upload(self, file_path: str, base_path: str, relative_parent_path: str, delete_files: bool,
+               s3_name: Union[str, None] = None, obj_tags: dict = {}):
+        uploaded_relative_path = self.__upload_to_s3(base_path, relative_parent_path, file_path, delete_files, True, obj_tags, s3_name)
+        if delete_files is True:  # deleting local files
+            FileUtils.remove_if_exists(file_path)
+        return self.to_url(base_path, uploaded_relative_path)
+
+    def to_url(self, base_path: str, relative_path: str) -> str:
+        return f's3://{base_path}/{relative_path}'
 
     def get_s3_stream(self):
         return self.__s3_client.get_object(Bucket=self.__target_bucket, Key=self.__target_key)['Body']

@@ -1,4 +1,6 @@
+import logging
 import multiprocessing
+
 multiprocessing.set_start_method("fork")
 
 import os
@@ -8,6 +10,8 @@ import numpy as np
 import pandas as pd
 
 from parquet_flask.utils.file_utils import FileUtils
+
+LOGGER = logging.getLogger(__name__)
 
 
 def process_dict(data_dict_input):
@@ -29,7 +33,9 @@ class ParquetJsonFormatter:
         self.__project_name = project_name
 
     def start(self, csv_file: str):
+        LOGGER.debug(f'processing: {csv_file}')
         airnow_data = pd.read_csv(csv_file, sep=',', encoding='latin1')
+        LOGGER.debug(f'read: {csv_file}')
         """
         {
           "time": "2023-01-01T04:00:00Z",
@@ -62,8 +68,11 @@ class ParquetJsonFormatter:
         }
         airnow_data.rename(columns=renaming_column_dict, inplace=True)
         # airnow_data.fillna(None, inplace=True)
+        LOGGER.debug(f'renamed: {csv_file}')
 
         json_list = airnow_data.to_dict(orient='records')
+        LOGGER.debug(f'to raw_json: {csv_file}')
+
         pool = multiprocessing.Pool()
 
         # Use the Pool to apply the process_dict function to each dictionary in parallel
@@ -71,13 +80,16 @@ class ParquetJsonFormatter:
         # Close the Pool
         pool.close()
         pool.join()
+        LOGGER.debug(f'to parquet_json: {csv_file}')
         site_json = {
             "project": self.__project_name,
             "provider": self.__provider_name,
             "observations": result_list
         }
         FileUtils.write_json(f'{csv_file}.json', site_json, overwrite=True, prettify=True)
+        LOGGER.debug(f'written to file: {csv_file}')
         return
 
 
-ParquetJsonFormatter('AirNow', 'air_quality').start('/tmp/airnow3/concat/daily.csv')
+# ParquetJsonFormatter('AirNow', 'air_quality').start('/tmp/airnow3/concat/daily.csv')
+# ParquetJsonFormatter('AirNow', 'air_quality').start('/tmp/airnow3/concat/raw.csv')
