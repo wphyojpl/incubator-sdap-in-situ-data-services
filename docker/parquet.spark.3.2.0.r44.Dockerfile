@@ -31,6 +31,7 @@ ENV authentication_key '/usr/app/cdms_flask_auth.json'
 ENV authentication_type 'FILE'
 
 COPY parquet_flask /usr/app/parquet_flask
+COPY aqacf /usr/app/aqacf
 
 COPY in_situ_schema.json /usr/app
 ENV in_situ_schema=/usr/app/in_situ_schema.json

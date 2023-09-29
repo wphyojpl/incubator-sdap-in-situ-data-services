@@ -54,3 +54,5 @@ build_cdms_docker:
 push_cdms_docker:
 	docker push waiphyojpl/cdms.parquet.flask:${VERSION}
 
+build_push: build_cdms_docker push_cdms_docker
+
